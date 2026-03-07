@@ -4,9 +4,13 @@ export type QueueEvent =
   | 'payment.expired'
   | 'payment.refunded'
   | 'settlement.completed'
-  | 'merchant.verified'
+  | 'school.verified'
+  | 'student.imported'
+  | 'bill.generated'
+  | 'bill.overdue'
   | 'notification.email'
   | 'notification.sms'
+  | 'webhook.received'
   | 'webhook.trigger';
 
 export interface QueueMessage<T = unknown> {

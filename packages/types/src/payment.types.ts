@@ -14,22 +14,34 @@ export type PaymentMethod =
   | 'qris'
   | 'virtual_account';
 
-export type PaymentProvider = 'midtrans' | 'xendit' | 'stripe';
+export type PaymentProvider = 'duitku' | 'xendit' | 'midtrans' | 'bank_direct';
+
+// 3 workflow pembayaran
+export type PaymentWorkflow =
+  | 'provider_to_platform' // Workflow 1: Provider → Platform → Sekolah
+  | 'platform_direct' // Workflow 2: Platform → Sekolah
+  | 'bank_direct'; // Workflow 3: Bank → Sekolah
 
 export interface Payment {
   id: string;
-  merchantId: string;
+  schoolId: string;
+  studentId: string;
+  billId: string;
   externalId: string;
   amount: number;
+  adminFee: number;
+  totalAmount: number;
   currency: string;
   status: PaymentStatus;
   method: PaymentMethod;
   provider: PaymentProvider;
+  workflow: PaymentWorkflow;
   description?: string;
-  customerEmail?: string;
-  customerName?: string;
-  metadata?: Record<string, unknown>;
+  payerName: string;
+  payerEmail?: string;
+  payerPhone?: string;
   providerResponse?: Record<string, unknown>;
+  providerTransactionId?: string;
   expiredAt?: Date;
   paidAt?: Date;
   createdAt: Date;
@@ -37,13 +49,22 @@ export interface Payment {
 }
 
 export interface CreatePaymentDto {
-  merchantId: string;
+  schoolId: string;
+  studentId: string;
+  billId: string;
   amount: number;
-  currency: string;
   method: PaymentMethod;
   provider: PaymentProvider;
-  description?: string;
-  customerEmail?: string;
-  customerName?: string;
-  metadata?: Record<string, unknown>;
+  workflow: PaymentWorkflow;
+  payerName: string;
+  payerEmail?: string;
+  payerPhone?: string;
+}
+
+export interface ProviderWebhookPayload {
+  provider: PaymentProvider;
+  externalId: string;
+  status: string;
+  amount: number;
+  rawPayload: Record<string, unknown>;
 }

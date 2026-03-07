@@ -3,7 +3,7 @@ export type FraudAlertStatus = 'open' | 'reviewing' | 'resolved' | 'false_positi
 
 export interface FraudCheckResult {
   paymentId: string;
-  merchantId: string;
+  schoolId: string;
   riskScore: number; // 0-100
   riskLevel: RiskLevel;
   reasons: string[];
@@ -13,7 +13,7 @@ export interface FraudCheckResult {
 export interface FraudAlert {
   id: string;
   paymentId: string;
-  merchantId: string;
+  schoolId: string;
   riskScore: number;
   riskLevel: RiskLevel;
   reasons: string[];
