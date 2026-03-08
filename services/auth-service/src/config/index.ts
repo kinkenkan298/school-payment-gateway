@@ -24,7 +24,7 @@ const envSchema = z.object({
 
   SMTP_HOST: z.string().default('smtp.gmail.com'),
   SMTP_PORT: z.string().regex(/^\d+$/).transform(Number).default(587),
-  SMTP_USER: z.string().email(),
+  SMTP_USER: z.string(),
   SMTP_PASS: z.string().min(1),
   SMTP_FROM: z.string().default('noreply@school-payment-gateway.com'),
 
