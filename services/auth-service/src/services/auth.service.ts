@@ -116,8 +116,10 @@ export class AuthService {
 
     await UserModel.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
 
+    const userWithoutPassword = await UserModel.findById(user._id);
+
     logger.info({ userId: user._id.toString() }, 'User logged in');
-    return { accessToken, refreshToken, user };
+    return { accessToken, refreshToken, user: userWithoutPassword };
   }
 
   // ── Token ───────────────────────────────────────────────

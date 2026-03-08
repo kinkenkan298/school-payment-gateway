@@ -17,6 +17,14 @@ export class EmailService {
         pass: env.SMTP_PASS,
       },
     });
+
+    this.transporter.verify((error, success) => {
+      if (error) {
+        logger.error({ err: error }, 'SMTP connection failed');
+      } else {
+        logger.info('SMTP connection successful');
+      }
+    });
   }
 
   async sendVerificationEmail(email: string, name: string, token: string): Promise<void> {
