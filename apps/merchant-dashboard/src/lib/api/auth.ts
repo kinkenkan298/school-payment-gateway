@@ -12,6 +12,7 @@ export interface RegisterDto {
   password: string;
   schoolName: string;
   phone: string;
+  schoolLevel: string;
 }
 
 export interface AuthResponse {

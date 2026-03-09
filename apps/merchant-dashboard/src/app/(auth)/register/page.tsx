@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { GraduationCap, Eye, EyeOff, AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
+import { GraduationCap, Eye, EyeOff, AlertCircle, CheckCircle2, Loader2, FlaskConical } from 'lucide-react';
 import { register } from '@/lib/api/auth';
 import { useAuthStore } from '@/store/authStore';
+import { IS_MOCK, mockRegisterResponse } from '@/lib/mockAuth';
 
 const schoolLevels = [
   { value: '', label: 'Pilih jenjang sekolah' },
@@ -63,7 +64,16 @@ export default function RegisterPage() {
 
     setLoading(true);
     try {
-      const res = await register({ name, email, password, schoolName, phone });
+      if (IS_MOCK) {
+        await new Promise((r) => setTimeout(r, 800));
+        const res = mockRegisterResponse(email, name, schoolName);
+        setAuth(res.data.user, res.data.accessToken, res.data.refreshToken);
+        setSuccess('Pendaftaran berhasil! Mengalihkan ke dashboard...');
+        setTimeout(() => router.replace('/dashboard'), 1500);
+        return;
+      }
+
+      const res = await register({ name, email, password, schoolName, phone, schoolLevel });
       if (res.success) {
         setAuth(res.data.user, res.data.accessToken, res.data.refreshToken);
         setSuccess('Pendaftaran berhasil! Mengalihkan ke dashboard...');
@@ -117,6 +127,12 @@ export default function RegisterPage() {
 
           {/* Form */}
           <div className="px-8 py-7">
+            {IS_MOCK && (
+              <div className="flex items-center gap-2 rounded-lg bg-amber-50 border border-amber-200 px-4 py-2.5 text-amber-700 text-xs mb-4">
+                <FlaskConical className="h-3.5 w-3.5 flex-shrink-0" />
+                <span><strong>Mode Demo</strong> — daftar dengan data apa saja tanpa koneksi backend.</span>
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
                 <div className="flex items-start gap-2.5 rounded-lg border border-red-200 bg-red-50 px-4 py-3">

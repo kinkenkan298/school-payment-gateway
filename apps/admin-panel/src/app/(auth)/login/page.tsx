@@ -1,27 +1,24 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
-  GraduationCap,
+  ShieldCheck,
   Eye,
   EyeOff,
   AlertCircle,
   Loader2,
   LayoutDashboard,
-  ShieldCheck,
   ExternalLink,
   FlaskConical,
 } from 'lucide-react';
-import { clsx } from 'clsx';
-import { login } from '@/lib/api/auth';
 import { useAuthStore } from '@/store/authStore';
-import { IS_MOCK, mockLoginResponse } from '@/lib/mockAuth';
+import { adminLogin } from '@/lib/api/auth';
+import { IS_MOCK, mockAdminLoginResponse } from '@/lib/mockAuth';
 
-const ADMIN_URL = process.env.NEXT_PUBLIC_ADMIN_URL ?? 'http://localhost:5000';
+const MERCHANT_URL = process.env.NEXT_PUBLIC_MERCHANT_URL ?? 'http://localhost:4000';
 
-export default function LoginPage() {
+export default function AdminLoginPage() {
   const router = useRouter();
   const setAuth = useAuthStore((s) => s.setAuth);
 
@@ -34,69 +31,61 @@ export default function LoginPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
-
-    if (!email || !password) {
-      setError('Email dan password wajib diisi.');
-      return;
-    }
+    if (!email || !password) { setError('Email dan password wajib diisi.'); return; }
 
     setLoading(true);
     try {
       if (IS_MOCK) {
         await new Promise((r) => setTimeout(r, 600));
-        const res = mockLoginResponse(email);
+        const res = mockAdminLoginResponse(email);
         setAuth(res.data.user, res.data.accessToken, res.data.refreshToken);
         router.replace('/dashboard');
         return;
       }
 
-      const res = await login({ email, password });
+      const res = await adminLogin({ email, password });
       if (res.success) {
         setAuth(res.data.user, res.data.accessToken, res.data.refreshToken);
         router.replace('/dashboard');
       } else {
-        setError(res.message ?? 'Login gagal. Silakan coba lagi.');
+        setError(res.message ?? 'Login gagal.');
       }
     } catch (err: any) {
       const msg = err?.response?.data?.message;
-      if (err?.response?.status === 401) {
-        setError('Email atau password salah.');
-      } else if (msg) {
-        setError(msg);
-      } else {
-        setError('Tidak dapat terhubung ke server. Periksa koneksi Anda.');
-      }
+      if (err?.response?.status === 401) setError('Email atau password salah.');
+      else if (msg) setError(msg);
+      else setError('Tidak dapat terhubung ke server. Periksa koneksi Anda.');
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
 
         {/* Panel Switcher */}
         <div className="flex rounded-xl overflow-hidden border border-white/10 mb-5 bg-white/5 backdrop-blur-sm p-1 gap-1">
-          {/* Merchant Dashboard — active */}
+          {/* Admin Panel — active */}
           <div className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-white py-2.5 px-3">
-            <LayoutDashboard className="h-4 w-4 text-blue-600 flex-shrink-0" />
+            <ShieldCheck className="h-4 w-4 text-slate-700 flex-shrink-0" />
             <div className="text-left min-w-0">
-              <p className="text-xs font-semibold text-gray-900 truncate">Merchant Dashboard</p>
-              <p className="text-xs text-gray-500 leading-none">port 4000</p>
+              <p className="text-xs font-semibold text-gray-900 truncate">Admin Panel</p>
+              <p className="text-xs text-gray-500 leading-none">port 5000</p>
             </div>
           </div>
-          {/* Admin Panel — link */}
+          {/* Merchant Dashboard — link */}
           <a
-            href={`${ADMIN_URL}/login`}
+            href={`${MERCHANT_URL}/login`}
             className="flex-1 flex items-center justify-center gap-2 rounded-lg py-2.5 px-3 text-white/70 hover:bg-white/10 hover:text-white transition-colors group"
           >
-            <ShieldCheck className="h-4 w-4 flex-shrink-0" />
+            <LayoutDashboard className="h-4 w-4 flex-shrink-0" />
             <div className="text-left min-w-0">
               <p className="text-xs font-semibold truncate flex items-center gap-1">
-                Admin Panel
+                Merchant Dashboard
                 <ExternalLink className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
               </p>
-              <p className="text-xs opacity-60 leading-none">port 5000</p>
+              <p className="text-xs opacity-60 leading-none">port 4000</p>
             </div>
           </a>
         </div>
@@ -112,18 +101,18 @@ export default function LoginPage() {
         {/* Card */}
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-8">
+          <div className="bg-gradient-to-r from-slate-800 to-slate-700 px-8 py-8">
             <div className="flex items-center gap-3 mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
-                <GraduationCap className="h-6 w-6 text-white" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm">
+                <ShieldCheck className="h-6 w-6 text-white" />
               </div>
               <div>
                 <p className="text-lg font-bold text-white leading-none">School Pay</p>
-                <p className="text-blue-200 text-xs mt-0.5">Merchant Dashboard</p>
+                <p className="text-slate-400 text-xs mt-0.5">Admin Panel</p>
               </div>
             </div>
-            <h1 className="text-2xl font-bold text-white">Masuk ke Dashboard</h1>
-            <p className="text-blue-200 text-sm mt-1">Kelola pembayaran sekolah Anda dengan mudah</p>
+            <h1 className="text-2xl font-bold text-white">Masuk ke Admin Panel</h1>
+            <p className="text-slate-300 text-sm mt-1">Manajemen merchant, KYC, dan sistem pembayaran</p>
           </div>
 
           {/* Form */}
@@ -143,22 +132,17 @@ export default function LoginPage() {
                   id="email"
                   type="email"
                   autoComplete="email"
-                  placeholder="admin@sekolah.sch.id"
+                  placeholder="admin@schoolpay.id"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={loading}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-400 transition-colors"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent disabled:bg-gray-50 transition-colors"
                 />
               </div>
 
               {/* Password */}
               <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-                  <Link href="/forgot-password" className="text-xs text-blue-600 hover:text-blue-700 font-medium">
-                    Lupa password?
-                  </Link>
-                </div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
                 <div className="relative">
                   <input
                     id="password"
@@ -168,7 +152,7 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={loading}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 pr-11 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-400 transition-colors"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 pr-11 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent disabled:bg-gray-50 transition-colors"
                   />
                   <button
                     type="button"
@@ -185,37 +169,20 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 rounded-lg bg-slate-800 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <><Loader2 className="h-4 w-4 animate-spin" /> Memverifikasi...</>
                 ) : (
-                  'Masuk'
+                  'Masuk ke Admin Panel'
                 )}
               </button>
             </form>
-
-            {/* Divider */}
-            <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200" />
-              </div>
-              <div className="relative flex justify-center">
-                <span className="bg-white px-3 text-xs text-gray-400">Belum punya akun?</span>
-              </div>
-            </div>
-
-            <Link
-              href="/register"
-              className="flex w-full items-center justify-center rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:border-gray-400"
-            >
-              Daftarkan Sekolah Anda
-            </Link>
           </div>
         </div>
 
-        <p className="text-center text-xs text-blue-300 mt-6">
-          © 2026 School Pay · Payment Gateway untuk Sekolah Indonesia
+        <p className="text-center text-xs text-slate-500 mt-6">
+          © 2026 School Pay · Akses terbatas untuk administrator
         </p>
       </div>
     </div>
