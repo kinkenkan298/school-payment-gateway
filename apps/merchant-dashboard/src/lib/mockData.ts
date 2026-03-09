@@ -126,6 +126,86 @@ export const mockSettlements = [
   },
 ];
 
+// ─── Reports Mock Data ────────────────────────────────────────────────────────
+
+export const mockReportSummary = {
+  totalRevenue: 48750000,
+  totalTransactions: 1284,
+  successCount: 1209,
+  failedCount: 52,
+  pendingCount: 23,
+  refundedCount: 0,
+  successRate: 94.2,
+  failureRate: 4.1,
+  avgTransactionValue: 37967,
+  totalFees: 245000,
+  netRevenue: 48505000,
+  revenueGrowth: 12.5,
+  transactionGrowth: 8.3,
+};
+
+// Data harian 30 hari terakhir
+export const mockDailyRevenue = Array.from({ length: 30 }, (_, i) => {
+  const date = new Date('2026-02-01');
+  date.setDate(date.getDate() + i);
+  const day = date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
+  const base = 1200000 + Math.random() * 800000;
+  const transactions = Math.floor(30 + Math.random() * 30);
+  return {
+    date: day,
+    revenue: Math.round(base),
+    transactions,
+    success: Math.floor(transactions * 0.92),
+    failed: Math.floor(transactions * 0.05),
+  };
+});
+
+// Data mingguan
+export const mockWeeklyRevenue = [
+  { period: 'Mg 1 Jan', revenue: 9200000, transactions: 265, success: 249, failed: 16 },
+  { period: 'Mg 2 Jan', revenue: 10500000, transactions: 298, success: 281, failed: 17 },
+  { period: 'Mg 3 Jan', revenue: 9800000, transactions: 271, success: 255, failed: 16 },
+  { period: 'Mg 4 Jan', revenue: 12000000, transactions: 361, success: 340, failed: 21 },
+  { period: 'Mg 1 Feb', revenue: 11500000, transactions: 312, success: 294, failed: 18 },
+  { period: 'Mg 2 Feb', revenue: 12875000, transactions: 342, success: 323, failed: 19 },
+  { period: 'Mg 3 Feb', revenue: 13200000, transactions: 351, success: 331, failed: 20 },
+  { period: 'Mg 4 Feb', revenue: 11175000, transactions: 279, success: 261, failed: 18 },
+];
+
+// Data bulanan (6 bulan)
+export const mockMonthlyRevenue = [
+  { period: 'Sep 2025', revenue: 28500000, transactions: 820, success: 772, failed: 48 },
+  { period: 'Okt 2025', revenue: 32000000, transactions: 950, success: 895, failed: 55 },
+  { period: 'Nov 2025', revenue: 29800000, transactions: 875, success: 824, failed: 51 },
+  { period: 'Des 2025', revenue: 38200000, transactions: 1100, success: 1036, failed: 64 },
+  { period: 'Jan 2026', revenue: 41500000, transactions: 1195, success: 1125, failed: 70 },
+  { period: 'Feb 2026', revenue: 48750000, transactions: 1284, success: 1209, failed: 75 },
+];
+
+// Breakdown status transaksi
+export const mockStatusBreakdown = [
+  { status: 'Berhasil', count: 1209, amount: 46500000, color: '#10b981' },
+  { status: 'Gagal', count: 52, amount: 0, color: '#ef4444' },
+  { status: 'Menunggu', count: 23, amount: 2250000, color: '#f59e0b' },
+];
+
+// Breakdown per metode pembayaran (dengan jumlah)
+export const mockMethodBreakdown = [
+  { method: 'Virtual Account', count: 539, amount: 20450000, percentage: 42, color: '#3b82f6' },
+  { method: 'QRIS', count: 359, amount: 13650000, percentage: 28, color: '#10b981' },
+  { method: 'Transfer Bank', count: 231, amount: 8775000, percentage: 18, color: '#f59e0b' },
+  { method: 'E-Wallet', count: 154, amount: 5875000, percentage: 12, color: '#8b5cf6' },
+];
+
+// Top transaksi
+export const mockTopTransactions = [
+  { id: 'txn_top1', studentName: 'Rizki Pratama', amount: 5000000, method: 'virtual_account', status: 'success', createdAt: '2026-02-28T09:00:00Z', description: 'Uang Gedung' },
+  { id: 'txn_top2', studentName: 'Anisa Maharani', amount: 3500000, method: 'bank_transfer', status: 'success', createdAt: '2026-02-25T14:00:00Z', description: 'Uang Kegiatan Tahunan' },
+  { id: 'txn_top3', studentName: 'Fajar Nugroho', amount: 2750000, method: 'virtual_account', status: 'success', createdAt: '2026-02-20T10:30:00Z', description: 'Biaya Ujian + SPP' },
+  { id: 'txn_top4', studentName: 'Sari Dewanti', amount: 2500000, method: 'qris', status: 'success', createdAt: '2026-02-18T11:00:00Z', description: 'Daftar Ulang TP 2026' },
+  { id: 'txn_top5', studentName: 'Hendra Wijaya', amount: 2200000, method: 'ewallet', status: 'success', createdAt: '2026-02-15T16:00:00Z', description: 'SPP + Ekstrakulikuler' },
+];
+
 export const mockApiKeys = [
   {
     id: 'key_001',
