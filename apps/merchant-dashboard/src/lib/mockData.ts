@@ -1,0 +1,150 @@
+// Mock data untuk development — diganti dengan API call setelah backend ready
+
+export const mockStats = {
+  totalRevenue: 48750000,
+  totalTransactions: 1284,
+  successRate: 94.2,
+  pendingSettlement: 12300000,
+  revenueGrowth: 12.5,
+  transactionGrowth: 8.3,
+};
+
+export const mockRevenueData = [
+  { month: 'Sep', revenue: 28500000, transactions: 820 },
+  { month: 'Okt', revenue: 32000000, transactions: 950 },
+  { month: 'Nov', revenue: 29800000, transactions: 875 },
+  { month: 'Des', revenue: 38200000, transactions: 1100 },
+  { month: 'Jan', revenue: 41500000, transactions: 1195 },
+  { month: 'Feb', revenue: 48750000, transactions: 1284 },
+];
+
+export const mockPaymentMethodData = [
+  { name: 'Virtual Account', value: 42, color: '#3b82f6' },
+  { name: 'QRIS', value: 28, color: '#10b981' },
+  { name: 'Transfer Bank', value: 18, color: '#f59e0b' },
+  { name: 'E-Wallet', value: 12, color: '#8b5cf6' },
+];
+
+export const mockTransactions = [
+  {
+    id: 'txn_001abc',
+    paymentId: 'pay_001',
+    studentName: 'Ahmad Fauzi',
+    amount: 850000,
+    fee: 5000,
+    netAmount: 845000,
+    status: 'success',
+    method: 'virtual_account',
+    workflow: 'provider_to_platform',
+    description: 'SPP Bulan Februari 2026',
+    createdAt: '2026-02-15T09:30:00Z',
+  },
+  {
+    id: 'txn_002def',
+    paymentId: 'pay_002',
+    studentName: 'Siti Rahayu',
+    amount: 1200000,
+    fee: 8000,
+    netAmount: 1192000,
+    status: 'success',
+    method: 'qris',
+    workflow: 'platform_direct',
+    description: 'Uang Kegiatan Semester',
+    createdAt: '2026-02-15T10:15:00Z',
+  },
+  {
+    id: 'txn_003ghi',
+    paymentId: 'pay_003',
+    studentName: 'Budi Santoso',
+    amount: 500000,
+    fee: 0,
+    netAmount: 500000,
+    status: 'pending',
+    method: 'bank_transfer',
+    workflow: 'bank_direct',
+    description: 'SPP Bulan Februari 2026',
+    createdAt: '2026-02-15T11:00:00Z',
+  },
+  {
+    id: 'txn_004jkl',
+    paymentId: 'pay_004',
+    studentName: 'Dewi Lestari',
+    amount: 750000,
+    fee: 5000,
+    netAmount: 745000,
+    status: 'failed',
+    method: 'ewallet',
+    workflow: 'provider_to_platform',
+    description: 'Pembayaran Seragam',
+    createdAt: '2026-02-14T14:30:00Z',
+  },
+  {
+    id: 'txn_005mno',
+    paymentId: 'pay_005',
+    studentName: 'Rizki Pratama',
+    amount: 1500000,
+    fee: 10000,
+    netAmount: 1490000,
+    status: 'success',
+    method: 'virtual_account',
+    workflow: 'provider_to_platform',
+    description: 'Uang Daftar Ulang',
+    createdAt: '2026-02-14T16:00:00Z',
+  },
+];
+
+export const mockSettlements = [
+  {
+    id: 'stl_001',
+    period: 'Feb 1–15, 2026',
+    totalAmount: 24375000,
+    transactionCount: 642,
+    fee: 125000,
+    netAmount: 24250000,
+    status: 'completed',
+    settledAt: '2026-02-16T08:00:00Z',
+  },
+  {
+    id: 'stl_002',
+    period: 'Jan 16–31, 2026',
+    totalAmount: 20825000,
+    transactionCount: 598,
+    fee: 100000,
+    netAmount: 20725000,
+    status: 'completed',
+    settledAt: '2026-02-01T08:00:00Z',
+  },
+  {
+    id: 'stl_003',
+    period: 'Feb 16–28, 2026',
+    totalAmount: 12300000,
+    transactionCount: 324,
+    fee: 62000,
+    netAmount: 12238000,
+    status: 'pending',
+    settledAt: null,
+  },
+];
+
+export const mockApiKeys = [
+  {
+    id: 'key_001',
+    name: 'Production Key',
+    prefix: 'spk_live_',
+    maskedKey: 'spk_live_****************************Ab3x',
+    environment: 'production',
+    status: 'active',
+    lastUsed: '2026-02-15T10:30:00Z',
+    createdAt: '2025-12-01T00:00:00Z',
+  },
+  {
+    id: 'key_002',
+    name: 'Development Key',
+    prefix: 'spk_test_',
+    maskedKey: 'spk_test_****************************Xy9z',
+    environment: 'sandbox',
+    status: 'active',
+    lastUsed: '2026-02-14T15:20:00Z',
+    createdAt: '2025-12-01T00:00:00Z',
+  },
+];
