@@ -366,6 +366,85 @@ export const mockWebhookLogs: WebhookLog[] = [
   },
 ];
 
+// ─── KYC ───────────────────────────────────────────────────────────────────
+
+export type KycStatus = 'unverified' | 'pending' | 'under_review' | 'verified' | 'rejected';
+export type KycDocumentStatus = 'not_uploaded' | 'uploaded' | 'approved' | 'rejected';
+
+export type KycDocumentType =
+  | 'ktp_kepala_sekolah'
+  | 'npwp_sekolah'
+  | 'akta_pendirian'
+  | 'sk_kemendikbud';
+
+export interface KycDocument {
+  type: KycDocumentType;
+  label: string;
+  description: string;
+  status: KycDocumentStatus;
+  fileName: string | null;
+  fileSize: number | null;
+  uploadedAt: string | null;
+  rejectionReason: string | null;
+}
+
+export interface KycData {
+  status: KycStatus;
+  submittedAt: string | null;
+  reviewedAt: string | null;
+  rejectionReason: string | null;
+  documents: KycDocument[];
+}
+
+export const mockKycData: KycData = {
+  status: 'unverified',
+  submittedAt: null,
+  reviewedAt: null,
+  rejectionReason: null,
+  documents: [
+    {
+      type: 'ktp_kepala_sekolah',
+      label: 'KTP Kepala Sekolah',
+      description: 'KTP (Kartu Tanda Penduduk) Kepala Sekolah yang masih berlaku',
+      status: 'not_uploaded',
+      fileName: null,
+      fileSize: null,
+      uploadedAt: null,
+      rejectionReason: null,
+    },
+    {
+      type: 'npwp_sekolah',
+      label: 'NPWP Sekolah',
+      description: 'Nomor Pokok Wajib Pajak atas nama sekolah (bukan pribadi)',
+      status: 'not_uploaded',
+      fileName: null,
+      fileSize: null,
+      uploadedAt: null,
+      rejectionReason: null,
+    },
+    {
+      type: 'akta_pendirian',
+      label: 'Akta Pendirian Sekolah',
+      description: 'Akta notaris pendirian yayasan / lembaga pendidikan',
+      status: 'not_uploaded',
+      fileName: null,
+      fileSize: null,
+      uploadedAt: null,
+      rejectionReason: null,
+    },
+    {
+      type: 'sk_kemendikbud',
+      label: 'SK Kemendikbud / Kemenag',
+      description: 'Surat Keputusan izin operasional dari Kemendikbud atau Kemenag',
+      status: 'not_uploaded',
+      fileName: null,
+      fileSize: null,
+      uploadedAt: null,
+      rejectionReason: null,
+    },
+  ],
+};
+
 export const mockApiKeys = [
   {
     id: 'key_001',

@@ -14,12 +14,14 @@ import {
   LogOut,
   BarChart3,
   Webhook,
+  ShieldCheck,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { logout as logoutApi } from '@/lib/api/auth';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/kyc', label: 'Verifikasi (KYC)', icon: ShieldCheck },
   { href: '/transactions', label: 'Transaksi', icon: ArrowLeftRight },
   { href: '/settlements', label: 'Settlement', icon: Landmark },
   { href: '/payouts', label: 'Pencairan', icon: Banknote },
