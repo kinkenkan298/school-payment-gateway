@@ -13,6 +13,7 @@ import {
   GraduationCap,
   LogOut,
   BarChart3,
+  Webhook,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { logout as logoutApi } from '@/lib/api/auth';
@@ -23,6 +24,7 @@ const navItems = [
   { href: '/settlements', label: 'Settlement', icon: Landmark },
   { href: '/payouts', label: 'Pencairan', icon: Banknote },
   { href: '/reports', label: 'Laporan', icon: BarChart3 },
+  { href: '/webhooks', label: 'Webhook', icon: Webhook },
   { href: '/api-keys', label: 'API Keys', icon: Key },
   { href: '/settings', label: 'Pengaturan', icon: Settings },
 ];

@@ -206,6 +206,166 @@ export const mockTopTransactions = [
   { id: 'txn_top5', studentName: 'Hendra Wijaya', amount: 2200000, method: 'ewallet', status: 'success', createdAt: '2026-02-15T16:00:00Z', description: 'SPP + Ekstrakulikuler' },
 ];
 
+// ─── Webhook Mock Data ────────────────────────────────────────────────────────
+
+export type WebhookEvent =
+  | 'payment.success'
+  | 'payment.failed'
+  | 'payment.expired'
+  | 'payment.refunded'
+  | 'settlement.completed'
+  | 'invoice.created';
+
+export interface WebhookConfig {
+  id: string;
+  name: string;
+  url: string;
+  events: WebhookEvent[];
+  status: 'active' | 'inactive';
+  secret: string;
+  successCount: number;
+  failCount: number;
+  lastDeliveryAt: string | null;
+  lastDeliveryStatus: 'success' | 'failed' | null;
+  createdAt: string;
+}
+
+export interface WebhookLog {
+  id: string;
+  webhookId: string;
+  event: WebhookEvent;
+  status: 'success' | 'failed' | 'pending';
+  httpStatus: number | null;
+  responseTimeMs: number | null;
+  retryCount: number;
+  requestPayload: Record<string, unknown>;
+  responseBody: string | null;
+  errorMessage: string | null;
+  nextRetryAt: string | null;
+  createdAt: string;
+}
+
+export const mockWebhookConfigs: WebhookConfig[] = [
+  {
+    id: 'wh_001',
+    name: 'Production Endpoint',
+    url: 'https://sdncontoh01.sch.id/webhook/schoolpay',
+    events: ['payment.success', 'payment.failed', 'settlement.completed'],
+    status: 'active',
+    secret: 'whsec_••••••••••••••••••••••Ab3x',
+    successCount: 1198,
+    failCount: 11,
+    lastDeliveryAt: '2026-02-15T10:31:05Z',
+    lastDeliveryStatus: 'success',
+    createdAt: '2025-12-01T00:00:00Z',
+  },
+  {
+    id: 'wh_002',
+    name: 'Staging Endpoint',
+    url: 'https://staging.sdncontoh01.sch.id/webhook',
+    events: ['payment.success', 'payment.failed', 'payment.expired', 'payment.refunded'],
+    status: 'active',
+    secret: 'whsec_••••••••••••••••••••••Xy9z',
+    successCount: 87,
+    failCount: 3,
+    lastDeliveryAt: '2026-02-14T15:22:00Z',
+    lastDeliveryStatus: 'failed',
+    createdAt: '2026-01-10T00:00:00Z',
+  },
+  {
+    id: 'wh_003',
+    name: 'Monitoring Slack',
+    url: 'https://hooks.slack.com/services/T00/B00/xxxx',
+    events: ['payment.failed', 'settlement.completed'],
+    status: 'inactive',
+    secret: 'whsec_••••••••••••••••••••••Mn1p',
+    successCount: 45,
+    failCount: 0,
+    lastDeliveryAt: '2026-01-31T08:00:00Z',
+    lastDeliveryStatus: 'success',
+    createdAt: '2026-01-15T00:00:00Z',
+  },
+];
+
+const samplePayload = {
+  event: 'payment.success',
+  paymentId: 'pay_001abc',
+  studentId: 'std_001',
+  billId: 'bill_feb_001',
+  amount: 850000,
+  currency: 'IDR',
+  status: 'success',
+  method: 'virtual_account',
+  workflow: 'provider_to_platform',
+  timestamp: '2026-02-15T09:30:00Z',
+};
+
+export const mockWebhookLogs: WebhookLog[] = [
+  {
+    id: 'log_001', webhookId: 'wh_001', event: 'payment.success',
+    status: 'success', httpStatus: 200, responseTimeMs: 143, retryCount: 0,
+    requestPayload: { ...samplePayload, paymentId: 'pay_001abc' },
+    responseBody: '{"received":true}', errorMessage: null, nextRetryAt: null,
+    createdAt: '2026-02-15T10:31:05Z',
+  },
+  {
+    id: 'log_002', webhookId: 'wh_001', event: 'payment.success',
+    status: 'success', httpStatus: 200, responseTimeMs: 89, retryCount: 0,
+    requestPayload: { ...samplePayload, paymentId: 'pay_002def' },
+    responseBody: '{"received":true}', errorMessage: null, nextRetryAt: null,
+    createdAt: '2026-02-15T10:16:30Z',
+  },
+  {
+    id: 'log_003', webhookId: 'wh_001', event: 'payment.failed',
+    status: 'failed', httpStatus: 500, responseTimeMs: 3020, retryCount: 2,
+    requestPayload: { ...samplePayload, event: 'payment.failed', status: 'failed', paymentId: 'pay_003ghi' },
+    responseBody: '{"error":"Internal Server Error"}',
+    errorMessage: 'Server responded with 500. Max retries (3) reached.',
+    nextRetryAt: null,
+    createdAt: '2026-02-14T14:55:00Z',
+  },
+  {
+    id: 'log_004', webhookId: 'wh_001', event: 'settlement.completed',
+    status: 'success', httpStatus: 200, responseTimeMs: 201, retryCount: 0,
+    requestPayload: { event: 'settlement.completed', settlementId: 'stl_001', amount: 24250000, timestamp: '2026-02-16T08:00:00Z' },
+    responseBody: '{"received":true}', errorMessage: null, nextRetryAt: null,
+    createdAt: '2026-02-16T08:00:22Z',
+  },
+  {
+    id: 'log_005', webhookId: 'wh_001', event: 'payment.success',
+    status: 'failed', httpStatus: null, responseTimeMs: null, retryCount: 1,
+    requestPayload: { ...samplePayload, paymentId: 'pay_004jkl' },
+    responseBody: null,
+    errorMessage: 'Connection timeout after 30000ms',
+    nextRetryAt: '2026-02-15T09:40:00Z',
+    createdAt: '2026-02-15T09:30:22Z',
+  },
+  {
+    id: 'log_006', webhookId: 'wh_001', event: 'payment.success',
+    status: 'success', httpStatus: 201, responseTimeMs: 312, retryCount: 1,
+    requestPayload: { ...samplePayload, paymentId: 'pay_004jkl' },
+    responseBody: '{"status":"ok"}',
+    errorMessage: null, nextRetryAt: null,
+    createdAt: '2026-02-15T09:40:05Z',
+  },
+  {
+    id: 'log_007', webhookId: 'wh_002', event: 'payment.failed',
+    status: 'failed', httpStatus: 404, responseTimeMs: 98, retryCount: 3,
+    requestPayload: { ...samplePayload, event: 'payment.failed', paymentId: 'pay_005mno' },
+    responseBody: '{"error":"Not Found"}',
+    errorMessage: 'Server responded with 404. URL mungkin sudah berubah.',
+    nextRetryAt: null,
+    createdAt: '2026-02-14T15:22:00Z',
+  },
+  {
+    id: 'log_008', webhookId: 'wh_002', event: 'payment.success',
+    status: 'success', httpStatus: 200, responseTimeMs: 175, retryCount: 0,
+    requestPayload: { ...samplePayload, paymentId: 'pay_006pqr' },
+    responseBody: '{"received":true}', errorMessage: null, nextRetryAt: null,
+    createdAt: '2026-02-13T11:05:00Z',
+  },
+];
+
 export const mockApiKeys = [
   {
     id: 'key_001',
