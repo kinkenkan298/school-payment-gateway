@@ -1,0 +1,22 @@
+meta {
+  name: Create API Key
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{base_url_auth}}/auth/api-keys
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "name": "Production API Key",
+    "expiresAt": "2027-01-01T00:00:00.000Z"
+  }
+}

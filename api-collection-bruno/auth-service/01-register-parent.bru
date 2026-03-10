@@ -1,0 +1,20 @@
+meta {
+  name: Register Parent
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url_auth}}/auth/register/parent
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Budi Santoso",
+    "email": "budi@gmail.com",
+    "password": "Password123",
+    "phone": "081234567890"
+  }
+}

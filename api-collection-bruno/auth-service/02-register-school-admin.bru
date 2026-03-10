@@ -1,0 +1,21 @@
+meta {
+  name: Register School Admin
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url_auth}}/auth/register/school-admin
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Ahmad Fauzi",
+    "email": "ahmad.fauzi@smpn1sby.sch.id",
+    "password": "Password123",
+    "phone": "081298765432",
+    "schoolId": "{{school_id}}"
+  }
+}

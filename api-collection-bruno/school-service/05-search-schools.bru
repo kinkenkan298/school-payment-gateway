@@ -1,0 +1,15 @@
+meta {
+  name: Search Schools
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url_school}}/schools?page=1&limit=10&search=Surabaya&level=smp&province=Jawa Timur
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
