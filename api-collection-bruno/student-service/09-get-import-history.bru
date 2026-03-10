@@ -1,11 +1,11 @@
 meta {
-  name: Get School By ID
+  name: Get Import History
   type: http
-  seq: 3
+  seq: 9
 }
 
 get {
-  url: {{base_url_school}}/schools/{{school_id}}
+  url: {{base_url_student}}/students/imports
   body: none
   auth: bearer
 }

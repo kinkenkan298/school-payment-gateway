@@ -1,11 +1,11 @@
 meta {
-  name: Get School By ID
+  name: Get All Students
   type: http
-  seq: 3
+  seq: 2
 }
 
 get {
-  url: {{base_url_school}}/schools/{{school_id}}
+  url: {{base_url_student}}/students?page=1&limit=10
   body: none
   auth: bearer
 }

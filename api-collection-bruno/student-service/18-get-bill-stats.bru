@@ -1,11 +1,11 @@
 meta {
-  name: Get School By ID
+  name: Get Bill Stats
   type: http
-  seq: 3
+  seq: 18
 }
 
 get {
-  url: {{base_url_school}}/schools/{{school_id}}
+  url: {{base_url_student}}/bills/stats?academicYear=2024/2025
   body: none
   auth: bearer
 }

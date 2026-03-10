@@ -1,11 +1,11 @@
 meta {
-  name: Get School By ID
+  name: Waive Bill
   type: http
-  seq: 3
+  seq: 16
 }
 
-get {
-  url: {{base_url_school}}/schools/{{school_id}}
+patch {
+  url: {{base_url_student}}/bills/{{bill_id}}/waive
   body: none
   auth: bearer
 }
