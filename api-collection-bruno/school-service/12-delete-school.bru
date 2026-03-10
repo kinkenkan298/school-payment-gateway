@@ -1,0 +1,15 @@
+meta {
+  name: Delete School (Deactivate)
+  type: http
+  seq: 12
+}
+
+delete {
+  url: {{base_url_school}}/schools/{{school_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

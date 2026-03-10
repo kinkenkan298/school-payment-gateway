@@ -1,0 +1,23 @@
+meta {
+  name: Update School
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{base_url_school}}/schools/{{school_id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "principalName": "Dr. Budi Hartono, M.Pd",
+    "phone": "0319876543",
+    "webhookUrl": "https://smpn1sby.sch.id/webhook/payment"
+  }
+}

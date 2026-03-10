@@ -1,0 +1,36 @@
+meta {
+  name: Create School
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url_school}}/schools
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "name": "SMP Negeri 1 Surabaya",
+    "email": "smpn1sby@gmail.com",
+    "phone": "0312345678",
+    "address": "Jl. Genteng Kali No.1",
+    "city": "Surabaya",
+    "province": "Jawa Timur",
+    "postalCode": "60275",
+    "level": "smp",
+    "npsn": "20532601",
+    "principalName": "Budi Hartono"
+  }
+}
+
+script:post-response {
+  if (res.status === 201) {
+    bru.setEnvVar("school_id", res.body.data._id);
+  }
+}
