@@ -1,11 +1,11 @@
 meta {
-  name: Get School By ID
+  name: Mark Overdue Bills
   type: http
-  seq: 3
+  seq: 17
 }
 
-get {
-  url: {{base_url_school}}/schools/{{school_id}}
+post {
+  url: {{base_url_student}}/bills/mark-overdue
   body: none
   auth: bearer
 }

@@ -1,0 +1,19 @@
+meta {
+  name: Import Students CSV
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{base_url_student}}/students/import
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:multipart-form {
+  file: @file(/home/riko/Projects/school-payment-gateway/student.csv)
+}

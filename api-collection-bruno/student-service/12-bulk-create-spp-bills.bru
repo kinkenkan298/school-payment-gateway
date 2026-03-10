@@ -1,0 +1,26 @@
+meta {
+  name: Bulk Create SPP Bills
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{base_url_student}}/bills/bulk
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "academicYear": "2024/2025",
+    "month": 3,
+    "year": 2025,
+    "amount": 250000,
+    "dueDate": "2025-03-31T23:59:59.000Z",
+    "gradeFilter": 7
+  }
+}
