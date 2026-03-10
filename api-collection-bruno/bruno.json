@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "School Payment Gateway",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
