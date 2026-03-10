@@ -1,0 +1,21 @@
+meta {
+  name: Update School Status
+  type: http
+  seq: 9
+}
+
+patch {
+  url: {{base_url_school}}/schools/{{school_id}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "status": "active"
+  }
+}

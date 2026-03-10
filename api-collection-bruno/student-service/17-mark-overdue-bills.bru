@@ -1,0 +1,15 @@
+meta {
+  name: Mark Overdue Bills
+  type: http
+  seq: 17
+}
+
+post {
+  url: {{base_url_student}}/bills/mark-overdue
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

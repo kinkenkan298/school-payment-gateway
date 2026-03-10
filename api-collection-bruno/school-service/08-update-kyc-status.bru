@@ -1,0 +1,21 @@
+meta {
+  name: Update KYC Status
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{base_url_school}}/schools/{{school_id}}/kyc
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "kycStatus": "verified"
+  }
+}

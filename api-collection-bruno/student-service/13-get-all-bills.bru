@@ -1,0 +1,15 @@
+meta {
+  name: Get All Bills
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{base_url_student}}/bills?page=1&limit=10&academicYear=2024/2025&status=unpaid
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

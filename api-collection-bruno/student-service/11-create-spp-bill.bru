@@ -1,0 +1,32 @@
+meta {
+  name: Create SPP Bill
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{base_url_student}}/bills
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "studentId": "{{student_id}}",
+    "academicYear": "2024/2025",
+    "month": 3,
+    "year": 2025,
+    "amount": 250000,
+    "dueDate": "2025-03-31T23:59:59.000Z"
+  }
+}
+
+script:post-response {
+  if (res.status === 201) {
+    bru.setEnvVar("bill_id", res.body.data._id);
+  }
+}

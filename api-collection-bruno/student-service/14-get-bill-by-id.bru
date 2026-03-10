@@ -1,0 +1,15 @@
+meta {
+  name: Get Bill By ID
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{base_url_student}}/bills/{{bill_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

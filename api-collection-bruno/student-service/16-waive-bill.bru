@@ -1,0 +1,15 @@
+meta {
+  name: Waive Bill
+  type: http
+  seq: 16
+}
+
+patch {
+  url: {{base_url_student}}/bills/{{bill_id}}/waive
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

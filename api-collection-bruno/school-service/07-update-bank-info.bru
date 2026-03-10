@@ -1,0 +1,23 @@
+meta {
+  name: Update Bank Info
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{base_url_school}}/schools/{{school_id}}/bank
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "bankAccountNumber": "1234567890",
+    "bankAccountName": "SMP Negeri 1 Surabaya",
+    "bankName": "Bank BRI"
+  }
+}

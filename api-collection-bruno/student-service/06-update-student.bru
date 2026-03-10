@@ -1,0 +1,23 @@
+meta {
+  name: Update Student
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{base_url_student}}/students/{{student_id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "className": "7B",
+    "parentPhone": "089876543210",
+    "parentEmail": "budi.update@gmail.com"
+  }
+}

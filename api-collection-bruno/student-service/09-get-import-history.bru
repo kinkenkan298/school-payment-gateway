@@ -1,0 +1,15 @@
+meta {
+  name: Get Import History
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{base_url_student}}/students/imports
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
