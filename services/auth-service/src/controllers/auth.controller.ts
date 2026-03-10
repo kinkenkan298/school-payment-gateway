@@ -27,9 +27,16 @@ export class AuthController {
   async registerParent(req: AuthRequest, res: Response): Promise<void> {
     try {
       const user = await authService.registerParent(req.body);
+      const userWithoutPassword = { ...user.toObject(), password: undefined };
+
       res
         .status(HTTP_STATUS.CREATED)
-        .json(successResponse(user, 'Registrasi berhasil. Silakan cek email untuk verifikasi.'));
+        .json(
+          successResponse(
+            userWithoutPassword,
+            'Registrasi berhasil. Silakan cek email untuk verifikasi.',
+          ),
+        );
     } catch (err) {
       handleError(err, res);
     }
@@ -38,11 +45,13 @@ export class AuthController {
   async registerSchoolAdmin(req: AuthRequest, res: Response): Promise<void> {
     try {
       const user = await authService.registerSchoolAdmin(req.body);
+      const userWithoutPassword = { ...user.toObject(), password: undefined };
+
       res
         .status(HTTP_STATUS.CREATED)
         .json(
           successResponse(
-            user,
+            userWithoutPassword,
             'Registrasi admin sekolah berhasil. Silakan cek email untuk verifikasi.',
           ),
         );
