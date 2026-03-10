@@ -1,0 +1,9 @@
+{
+  "folders": [
+    { "path": "apps/auth-service" },
+    { "path": "packages/types" },
+    { "path": "packages/shared-lib" },
+    { "path": "services/api-gateway" },
+    { "path": "services/auth-service" },
+  ],
+}
