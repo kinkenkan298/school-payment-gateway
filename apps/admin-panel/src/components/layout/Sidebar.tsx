@@ -26,7 +26,7 @@ const navItems = [
   { href: '/settlements', label: 'Settlement', icon: Landmark },
   { href: '/reports', label: 'Laporan', icon: BarChart3 },
   { href: '/fraud', label: 'Fraud Detection', icon: AlertTriangle },
-  { href: '/admins', label: 'Admin Users', icon: Users },
+  { href: '/users', label: 'Admin Users', icon: Users },
   { href: '/settings', label: 'Pengaturan', icon: Settings },
 ];
 
