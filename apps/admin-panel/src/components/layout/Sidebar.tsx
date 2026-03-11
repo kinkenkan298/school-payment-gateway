@@ -20,14 +20,14 @@ import { adminLogout } from '@/lib/api/auth';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/merchants', label: 'Merchant', icon: Building2 },
-  { href: '/kyc-review', label: 'Review KYC', icon: ShieldCheck, badge: 'kyc' },
-  { href: '/transactions', label: 'Transaksi', icon: ArrowLeftRight },
-  { href: '/settlements', label: 'Settlement', icon: Landmark },
-  { href: '/reports', label: 'Laporan', icon: BarChart3 },
-  { href: '/fraud', label: 'Fraud Detection', icon: AlertTriangle },
-  { href: '/users', label: 'Admin Users', icon: Users },
-  { href: '/settings', label: 'Pengaturan', icon: Settings },
+  { href: '/dashboard/merchants', label: 'Merchant', icon: Building2 },
+  { href: '/dashboard/kyc-review', label: 'Review KYC', icon: ShieldCheck, badge: 'kyc' },
+  { href: '/dashboard/transactions', label: 'Transaksi', icon: ArrowLeftRight },
+  { href: '/dashboard/settlements', label: 'Settlement', icon: Landmark },
+  { href: '/dashboard/reports', label: 'Laporan', icon: BarChart3 },
+  { href: '/dashboard/fraud', label: 'Fraud Detection', icon: AlertTriangle },
+  { href: '/dashboard/users', label: 'Admin Users', icon: Users },
+  { href: '/dashboard/settings', label: 'Pengaturan', icon: Settings },
 ];
 
 interface SidebarProps {
