@@ -14,20 +14,22 @@ import {
   Users,
   Landmark,
   AlertTriangle,
+  ShieldOff,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { adminLogout } from '@/lib/api/auth';
 
 const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/dashboard/merchants', label: 'Merchant', icon: Building2 },
-  { href: '/dashboard/kyc-review', label: 'Review KYC', icon: ShieldCheck, badge: 'kyc' },
-  { href: '/dashboard/transactions', label: 'Transaksi', icon: ArrowLeftRight },
-  { href: '/dashboard/settlements', label: 'Settlement', icon: Landmark },
-  { href: '/dashboard/reports', label: 'Laporan', icon: BarChart3 },
-  { href: '/dashboard/fraud', label: 'Fraud Detection', icon: AlertTriangle },
-  { href: '/dashboard/users', label: 'Admin Users', icon: Users },
-  { href: '/dashboard/settings', label: 'Pengaturan', icon: Settings },
+  { href: '/dashboard',              label: 'Dashboard',       icon: LayoutDashboard },
+  { href: '/dashboard/merchants',    label: 'Merchant',        icon: Building2 },
+  { href: '/dashboard/kyc-review',   label: 'Review KYC',     icon: ShieldCheck, badge: 'kyc' },
+  { href: '/dashboard/transactions', label: 'Transaksi',      icon: ArrowLeftRight },
+  { href: '/dashboard/settlements',  label: 'Settlement',     icon: Landmark },
+  { href: '/dashboard/reports',      label: 'Laporan',        icon: BarChart3 },
+  { href: '/dashboard/fraud',        label: 'Fraud Detection', icon: AlertTriangle },
+  { href: '/dashboard/fraud/blacklist', label: 'Blacklist',   icon: ShieldOff, indent: true },
+  { href: '/dashboard/users',        label: 'Admin Users',    icon: Users },
+  { href: '/dashboard/settings',     label: 'Pengaturan',     icon: Settings },
 ];
 
 interface SidebarProps {
@@ -72,8 +74,12 @@ export function Sidebar({ pendingKycCount = 0 }: SidebarProps) {
 
       {/* Nav */}
       <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-        {navItems.map(({ href, label, icon: Icon, badge }) => {
-          const active = pathname === href || pathname.startsWith(`${href}/`);
+        {navItems.map(({ href, label, icon: Icon, badge, indent }) => {
+          const active = pathname === href || (href !== '/dashboard' && pathname.startsWith(`${href}/`) && !navItems.some(n => n.href !== href && n.href.startsWith(href) && pathname.startsWith(n.href)));
+          const exactActive = pathname === href;
+          const isActive = href === '/dashboard/fraud'
+            ? pathname === href
+            : exactActive || pathname.startsWith(`${href}/`);
           const showBadge = badge === 'kyc' && pendingKycCount > 0;
           return (
             <Link
@@ -81,12 +87,13 @@ export function Sidebar({ pendingKycCount = 0 }: SidebarProps) {
               href={href}
               className={clsx(
                 'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
-                active
+                indent && 'ml-4 py-2 text-xs',
+                isActive
                   ? 'bg-slate-600 text-white'
                   : 'text-slate-400 hover:bg-slate-800 hover:text-white'
               )}
             >
-              <Icon className="h-5 w-5 flex-shrink-0" />
+              <Icon className={clsx('shrink-0', indent ? 'h-4 w-4' : 'h-5 w-5')} />
               <span className="flex-1">{label}</span>
               {showBadge && (
                 <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-xs font-bold text-white">
@@ -101,7 +108,7 @@ export function Sidebar({ pendingKycCount = 0 }: SidebarProps) {
       {/* Footer */}
       <div className="border-t border-slate-700 p-4 space-y-3">
         <div className="flex items-center gap-3 px-3">
-          <div className="h-8 w-8 rounded-full bg-slate-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
+          <div className="h-8 w-8 rounded-full bg-slate-600 flex items-center justify-center text-xs font-bold text-white shrink-0">
             {initials}
           </div>
           <div className="min-w-0 flex-1">

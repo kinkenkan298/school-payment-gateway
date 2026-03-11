@@ -1,14 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import {
   Building2,
   Search,
-  CheckCircle2,
-  Clock,
-  XCircle,
-  AlertCircle,
   ShieldCheck,
+  ChevronRight,
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { mockMerchants } from '@/lib/mockData';
@@ -20,17 +18,17 @@ function formatCurrency(n: number) {
 }
 
 const kycBadge: Record<Merchant['kycStatus'], { label: string; color: string }> = {
-  verified: { label: 'Terverifikasi', color: 'text-emerald-700 bg-emerald-50 border-emerald-200' },
-  pending: { label: 'Menunggu', color: 'text-amber-700 bg-amber-50 border-amber-200' },
-  under_review: { label: 'Direview', color: 'text-blue-700 bg-blue-50 border-blue-200' },
-  rejected: { label: 'Ditolak', color: 'text-red-700 bg-red-50 border-red-200' },
-  unverified: { label: 'Belum KYC', color: 'text-gray-600 bg-gray-50 border-gray-200' },
+  verified:     { label: 'Terverifikasi', color: 'text-emerald-700 bg-emerald-50 border-emerald-200' },
+  pending:      { label: 'Menunggu',      color: 'text-amber-700 bg-amber-50 border-amber-200' },
+  under_review: { label: 'Direview',      color: 'text-blue-700 bg-blue-50 border-blue-200' },
+  rejected:     { label: 'Ditolak',       color: 'text-red-700 bg-red-50 border-red-200' },
+  unverified:   { label: 'Belum KYC',     color: 'text-gray-600 bg-gray-50 border-gray-200' },
 };
 
 const statusBadge: Record<Merchant['status'], { label: string; color: string }> = {
-  active: { label: 'Aktif', color: 'text-emerald-700 bg-emerald-50' },
+  active:    { label: 'Aktif',     color: 'text-emerald-700 bg-emerald-50' },
   suspended: { label: 'Suspended', color: 'text-red-700 bg-red-50' },
-  pending: { label: 'Pending', color: 'text-amber-700 bg-amber-50' },
+  pending:   { label: 'Pending',   color: 'text-amber-700 bg-amber-50' },
 };
 
 export default function MerchantsPage() {
@@ -88,6 +86,7 @@ export default function MerchantsPage() {
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Status Akun</th>
               <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wide">Transaksi</th>
               <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wide">Revenue</th>
+              <th className="px-4 py-3"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
@@ -98,7 +97,7 @@ export default function MerchantsPage() {
                 <tr key={m.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                      <div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center shrink-0">
                         <Building2 className="h-4 w-4 text-blue-600" />
                       </div>
                       <div>
@@ -121,6 +120,14 @@ export default function MerchantsPage() {
                   </td>
                   <td className="px-4 py-3 text-right text-gray-700 font-medium">{m.totalTransactions.toLocaleString('id-ID')}</td>
                   <td className="px-4 py-3 text-right text-gray-700 font-medium">{formatCurrency(m.totalRevenue)}</td>
+                  <td className="px-4 py-3 text-right">
+                    <Link
+                      href={`/dashboard/merchants/${m.id}`}
+                      className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+                    >
+                      Detail <ChevronRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </td>
                 </tr>
               );
             })}

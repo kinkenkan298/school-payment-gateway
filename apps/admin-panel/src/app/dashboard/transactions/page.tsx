@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Search, CheckCircle2, XCircle, Clock, AlertTriangle, Download } from 'lucide-react';
+import Link from 'next/link';
+import { Search, CheckCircle2, XCircle, Clock, AlertTriangle, Download, ChevronRight } from 'lucide-react';
 import { clsx } from 'clsx';
 import { mockAdminTransactions } from '@/lib/mockData';
 import type { AdminTransaction } from '@/lib/mockData';
@@ -110,31 +111,43 @@ export default function TransactionsPage() {
         <table className="w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
-              {['ID', 'Merchant', 'Siswa', 'Metode', 'Jumlah', 'Fee', 'Status', 'Waktu'].map((h, i) => (
-                <th key={h} className={clsx('px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide',
-                  i >= 4 && i <= 5 ? 'text-right' : 'text-left')}>{h}</th>
-              ))}
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">ID / Waktu</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Merchant</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Siswa</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Metode</th>
+              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wide">Jumlah</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Status</th>
+              <th className="px-4 py-3"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
             {paginated.length === 0 ? (
-              <tr><td colSpan={8} className="py-10 text-center text-sm text-gray-400">Tidak ada transaksi yang sesuai filter.</td></tr>
+              <tr><td colSpan={7} className="py-10 text-center text-sm text-gray-400">Tidak ada transaksi yang sesuai filter.</td></tr>
             ) : paginated.map((tx) => {
               const sc = statusConfig[tx.status];
               return (
                 <tr key={tx.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-4 py-3 font-mono text-xs text-gray-500">...{tx.id.slice(-8)}</td>
+                  <td className="px-4 py-3">
+                    <p className="font-mono text-xs text-gray-500">...{tx.id.slice(-8)}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">{formatDate(tx.createdAt)}</p>
+                  </td>
                   <td className="px-4 py-3 text-gray-700 font-medium">{tx.merchantName}</td>
                   <td className="px-4 py-3 text-gray-700">{tx.studentName}</td>
                   <td className="px-4 py-3 text-gray-500 text-xs">{tx.method}</td>
                   <td className="px-4 py-3 text-right font-semibold text-gray-900">{formatCurrency(tx.amount)}</td>
-                  <td className="px-4 py-3 text-right text-gray-500">{formatCurrency(tx.fee)}</td>
                   <td className="px-4 py-3">
                     <span className={clsx('inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium', sc.color)}>
                       {sc.icon}{sc.label}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-xs text-gray-400">{formatDate(tx.createdAt)}</td>
+                  <td className="px-4 py-3 text-right">
+                    <Link
+                      href={`/dashboard/transactions/${tx.id}`}
+                      className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+                    >
+                      Detail <ChevronRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </td>
                 </tr>
               );
             })}
@@ -148,7 +161,9 @@ export default function TransactionsPage() {
           <span>Menampilkan {(page-1)*PAGE_SIZE+1}–{Math.min(page*PAGE_SIZE, filtered.length)} dari {filtered.length}</span>
           <div className="flex items-center gap-1">
             <button onClick={() => setPage((p) => Math.max(1, p-1))} disabled={page===1}
-              className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs disabled:opacity-40 hover:bg-gray-50">← Sebelumnya</button>
+              className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs disabled:opacity-40 hover:bg-gray-50">
+              Sebelumnya
+            </button>
             {Array.from({ length: totalPages }, (_, i) => i+1).map((p) => (
               <button key={p} onClick={() => setPage(p)}
                 className={clsx('rounded-lg px-3 py-1.5 text-xs', p===page ? 'bg-blue-600 text-white' : 'border border-gray-200 hover:bg-gray-50')}>
@@ -156,7 +171,9 @@ export default function TransactionsPage() {
               </button>
             ))}
             <button onClick={() => setPage((p) => Math.min(totalPages, p+1))} disabled={page===totalPages}
-              className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs disabled:opacity-40 hover:bg-gray-50">Berikutnya →</button>
+              className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs disabled:opacity-40 hover:bg-gray-50">
+              Berikutnya
+            </button>
           </div>
         </div>
       )}

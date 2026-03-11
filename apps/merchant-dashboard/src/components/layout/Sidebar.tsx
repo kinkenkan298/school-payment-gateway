@@ -15,12 +15,16 @@ import {
   BarChart3,
   Webhook,
   ShieldCheck,
+  PlusCircle,
+  Link2,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { logout as logoutApi } from '@/lib/api/auth';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/create-payment', label: 'Buat Pembayaran', icon: PlusCircle },
+  { href: '/payment-links', label: 'Payment Links', icon: Link2 },
   { href: '/kyc', label: 'Verifikasi (KYC)', icon: ShieldCheck },
   { href: '/transactions', label: 'Transaksi', icon: ArrowLeftRight },
   { href: '/settlements', label: 'Settlement', icon: Landmark },
@@ -47,7 +51,6 @@ export function Sidebar() {
     }
   }
 
-  // Inisial avatar dari nama sekolah
   const initials = user?.schoolName
     ? user.schoolName.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase()
     : 'SP';
