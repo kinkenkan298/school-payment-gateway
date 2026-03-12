@@ -3,17 +3,17 @@ export const EXCHANGES = {
   NOTIFICATION: 'notification.exchange',
   SETTLEMENT: 'settlement.exchange',
   STUDENT: 'student.exchange',
+  WEBHOOK: 'webhook.service',
 } as const;
 
 export const QUEUES = {
-  // Payment
   TRANSACTION_PAYMENT: 'transaction.payment.queue',
   NOTIFICATION_PAYMENT: 'notification.payment.queue',
   WEBHOOK_PAYMENT: 'webhook.payment.queue',
   FRAUD_CHECK: 'fraud.check.queue',
-  // Settlement
+
   NOTIFICATION_SETTLEMENT: 'notification.settlement.queue',
-  // Student
+
   STUDENT_IMPORT: 'student.import.queue',
   BILL_GENERATED: 'bill.generated.queue',
   BILL_OVERDUE: 'bill.overdue.queue',
@@ -23,6 +23,8 @@ export const QUEUES = {
 
   PAYMENT_SUCCESS_NOTIFICATION: 'payment.success.notification',
   PAYMENT_FAILED_NOTIFICATION: 'payment.failed.notification',
+
+  WEBHOOK_RECEIVED_PAYMENT: 'webhook.received.payment',
 } as const;
 
 export const HTTP_STATUS = {

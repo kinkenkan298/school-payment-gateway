@@ -10,12 +10,10 @@ const payment = new PaymentController();
 
 const allRoles = Object.values(ROLES);
 
-// ── Webhooks (public — dari provider) ────────────────────
 router.post('/webhook/duitku', payment.handleDuitkuWebhook.bind(payment));
 router.post('/webhook/xendit', payment.handleXenditWebhook.bind(payment));
 router.post('/webhook/midtrans', payment.handleMidtransWebhook.bind(payment));
 
-// ── Protected ─────────────────────────────────────────────
 router.use(authenticate);
 
 router.post('/', validate(createPaymentSchema), payment.createPayment.bind(payment));

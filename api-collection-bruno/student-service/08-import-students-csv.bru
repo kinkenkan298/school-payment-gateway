@@ -6,7 +6,7 @@ meta {
 
 post {
   url: {{base_url_student}}/students/import
-  body: multipartForm
+  body: multipart-form
   auth: bearer
 }
 
@@ -15,5 +15,5 @@ auth:bearer {
 }
 
 body:multipart-form {
-  file: @file(/home/riko/Projects/school-payment-gateway/student.csv)
+  file: @file(/path/to/students.csv)
 }

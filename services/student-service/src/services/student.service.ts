@@ -18,7 +18,6 @@ const ERROR_CODES = {
 } as const;
 
 export class StudentService {
-  // ── Create ──────────────────────────────────────────────
   async createStudent(schoolId: string, dto: CreateStudentDto): Promise<IStudent> {
     const existingNis = await StudentModel.findOne({ schoolId, nis: dto.nis });
     if (existingNis) throw new Error(ERROR_CODES.NIS_EXISTS);
@@ -35,7 +34,6 @@ export class StudentService {
     return student;
   }
 
-  // ── Import CSV ──────────────────────────────────────────
   async importFromCSV(schoolId: string, userId: string, file: Express.Multer.File) {
     const importRecord = await StudentImportModel.create({
       schoolId: new mongoose.Types.ObjectId(schoolId),
@@ -101,7 +99,6 @@ export class StudentService {
     }
   }
 
-  // ── Read ────────────────────────────────────────────────
   async getStudents(schoolId: string, query: StudentPaginationDto) {
     const { page, limit, search, grade, className, academicYear, status } = query;
     const skip = (page - 1) * limit;
@@ -143,7 +140,6 @@ export class StudentService {
     return student;
   }
 
-  // ── Update ──────────────────────────────────────────────
   async updateStudent(schoolId: string, id: string, dto: UpdateStudentDto): Promise<IStudent> {
     const student = await StudentModel.findOneAndUpdate({ _id: id, schoolId }, dto, { new: true });
     if (!student) throw new Error(ERROR_CODES.STUDENT_NOT_FOUND);
@@ -152,7 +148,6 @@ export class StudentService {
     return student;
   }
 
-  // ── Delete ──────────────────────────────────────────────
   async deleteStudent(schoolId: string, id: string): Promise<void> {
     const student = await StudentModel.findOneAndUpdate(
       { _id: id, schoolId },
@@ -163,7 +158,6 @@ export class StudentService {
     logger.info({ studentId: id, schoolId }, 'Student deactivated');
   }
 
-  // ── Stats ───────────────────────────────────────────────
   async getStudentStats(schoolId: string) {
     const [byGrade, byStatus, total] = await Promise.all([
       StudentModel.aggregate([
@@ -181,7 +175,6 @@ export class StudentService {
     return { byGrade, byStatus, totalActive: total };
   }
 
-  // ── Import History ──────────────────────────────────────
   async getImportHistory(schoolId: string) {
     return StudentImportModel.find({ schoolId }).sort({ createdAt: -1 }).limit(20);
   }

@@ -16,7 +16,6 @@ export interface PaymentSuccessPayload {
   totalAmount: number;
   provider: string;
   paidAt: string;
-  // Data tambahan dari student-service (opsional, diisi jika ada)
   studentName?: string;
   parentName?: string;
   parentEmail?: string;
@@ -56,7 +55,6 @@ export class NotificationService {
     const monthResolved = month || new Date().getMonth() + 1;
     const yearResolved = year || new Date().getFullYear();
 
-    // Kirim Email
     if (parentEmail) {
       const { subject, html } = paymentSuccessEmail({
         studentName: studentNameResolved,
@@ -104,7 +102,6 @@ export class NotificationService {
       }
     }
 
-    // Kirim Push Notification
     if (parentFcmToken) {
       try {
         await sendPushNotification({
