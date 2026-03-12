@@ -68,6 +68,15 @@ export class MidtransProvider extends BaseProvider {
   }
 
   async checkStatus(externalId: string): Promise<CheckStatusResult> {
+    if (env.NODE_ENV === 'development' && !env.MIDTRANS_SERVER_KEY) {
+      return {
+        providerTransactionId: `MOCK-MIDTRANS-${externalId}`,
+        status: 'success',
+        amount: 0,
+        providerResponse: { mock: true, externalId },
+      };
+    }
+
     const response = await axios.get(`${env.MIDTRANS_BASE_URL}/${externalId}/status`, {
       headers: this.headers,
     });

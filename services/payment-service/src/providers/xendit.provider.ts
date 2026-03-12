@@ -56,6 +56,15 @@ export class XenditProvider extends BaseProvider {
   }
 
   async checkStatus(externalId: string): Promise<CheckStatusResult> {
+    if (env.NODE_ENV === 'development' && !env.DUITKU_MERCHANT_CODE) {
+      return {
+        providerTransactionId: `MOCK-XENDIT-${externalId}`,
+        status: 'success',
+        amount: 0,
+        providerResponse: { mock: true, externalId },
+      };
+    }
+
     const response = await axios.get(
       `${env.XENDIT_BASE_URL}/v2/invoices?external_id=${externalId}`,
       { headers: this.headers },
