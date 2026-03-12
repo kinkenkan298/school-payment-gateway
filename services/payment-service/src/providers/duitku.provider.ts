@@ -66,6 +66,14 @@ export class DuitkuProvider extends BaseProvider {
   }
 
   async checkStatus(externalId: string): Promise<CheckStatusResult> {
+    if (env.NODE_ENV === 'development' && !env.DUITKU_MERCHANT_CODE) {
+      return {
+        providerTransactionId: `MOCK-DUITKU-${externalId}`,
+        status: 'success',
+        amount: 0,
+        providerResponse: { mock: true, externalId },
+      };
+    }
     const signature = crypto
       .createHash('md5')
       .update(`${env.DUITKU_MERCHANT_CODE}${externalId}${env.DUITKU_API_KEY}`)
