@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { ZodSchema } from 'zod';
+import { ZodType } from 'zod';
 import { errorResponse, HTTP_STATUS } from '@school-payment-gateway/shared-lib';
 
-export const validate = (schema: ZodSchema) => {
+export const validate = (schema: ZodType) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     const result = schema.safeParse(req.body);
     if (!result.success) {

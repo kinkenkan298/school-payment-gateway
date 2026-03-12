@@ -1,0 +1,25 @@
+meta {
+  name: [Webhook] Midtrans - Pending (pending)
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{base_url_webhook}}/webhooks/midtrans
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "order_id": "{{external_id}}",
+    "status_code": "201",
+    "gross_amount": "255000.00",
+    "transaction_id": "MIDTRANS_TRX_002",
+    "transaction_status": "pending",
+    "payment_type": "bank_transfer",
+    "transaction_time": "2025-03-12 10:00:00",
+    "currency": "IDR",
+    "signature_key": "skip_in_dev"
+  }
+}

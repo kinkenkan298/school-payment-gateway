@@ -1,0 +1,11 @@
+meta {
+  name: Get Webhook Logs
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{base_url_webhook}}/webhooks/logs?page=1&limit=10
+  body: none
+  auth: none
+}

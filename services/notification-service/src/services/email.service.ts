@@ -21,11 +21,6 @@ export interface SendEmailParams {
 }
 
 export const sendEmail = async (params: SendEmailParams): Promise<void> => {
-  // if (env.NODE_ENV === 'development') {
-  //   logger.info({ to: params.to, subject: params.subject }, '📧 [MOCK] Email sent');
-  //   return;
-  // }
-
   await transporter.sendMail({
     from: env.SMTP_FROM,
     to: params.to,

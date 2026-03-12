@@ -18,7 +18,6 @@ const ERROR_CODES = {
 } as const;
 
 export class SPPBillService {
-  // ── Create Single ───────────────────────────────────────
   async createBill(schoolId: string, dto: CreateSPPBillDto): Promise<ISPPBill> {
     const student = await StudentModel.findOne({ _id: dto.studentId, schoolId });
     if (!student) throw new Error(ERROR_CODES.STUDENT_NOT_FOUND);
@@ -41,14 +40,7 @@ export class SPPBillService {
     return bill;
   }
 
-  // ── Bulk Create ─────────────────────────────────────────
   async bulkCreateBills(schoolId: string, dto: BulkCreateSPPBillDto) {
-    // const filter: QueryFilter<typeof StudentModel> = {
-    //   schoolId,
-    //   status: 'active',
-    // };
-    // if (dto.gradeFilter) filter.grade = dto.gradeFilter;
-
     const students = await StudentModel.find({
       schoolId,
       status: 'active',
@@ -88,7 +80,6 @@ export class SPPBillService {
     return { created, skipped, total: students.length };
   }
 
-  // ── Read ────────────────────────────────────────────────
   async getBills(schoolId: string, query: BillPaginationDto) {
     const { page, limit, studentId, academicYear, month, year, status } = query;
     const skip = (page - 1) * limit;
@@ -134,7 +125,6 @@ export class SPPBillService {
     return this.getBills(schoolId, { ...query, studentId });
   }
 
-  // ── Update Status ───────────────────────────────────────
   async markAsPaid(schoolId: string, id: string, paymentId: string): Promise<ISPPBill> {
     const bill = await SPPBillModel.findOne({ _id: id, schoolId });
     if (!bill) throw new Error(ERROR_CODES.BILL_NOT_FOUND);
@@ -180,7 +170,6 @@ export class SPPBillService {
     return bill;
   }
 
-  // ── Stats ───────────────────────────────────────────────
   async getBillStats(schoolId: string, academicYear?: string) {
     const match: QueryFilter<ISPPBill> = {
       schoolId: new mongoose.Types.ObjectId(schoolId),

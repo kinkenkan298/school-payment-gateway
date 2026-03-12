@@ -17,7 +17,6 @@ import {
 const router: Router = Router();
 const auth = new AuthController();
 
-// ── Public ────────────────────────────────────────────────
 router.post('/register/parent', validate(registerParentSchema), auth.registerParent.bind(auth));
 router.post(
   '/register/school-admin',
@@ -31,11 +30,9 @@ router.get('/verify-email', auth.verifyEmail.bind(auth));
 router.post('/forgot-password', validate(forgotPasswordSchema), auth.forgotPassword.bind(auth));
 router.post('/reset-password', validate(resetPasswordSchema), auth.resetPassword.bind(auth));
 
-// ── Protected ─────────────────────────────────────────────
 router.use(authenticate);
 router.post('/change-password', validate(changePasswordSchema), auth.changePassword.bind(auth));
 
-// API Keys — khusus school admin
 router.post(
   '/api-keys',
   authorize(ROLES.SCHOOL_ADMIN, ROLES.SUPER_ADMIN),

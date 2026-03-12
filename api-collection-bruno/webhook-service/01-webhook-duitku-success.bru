@@ -1,0 +1,26 @@
+meta {
+  name: [Webhook] Duitku - Success (resultCode 00)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url_webhook}}/webhooks/duitku
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "merchantCode": "DS12345",
+    "amount": "255000",
+    "merchantOrderId": "{{external_id}}",
+    "productDetail": "SPP 3/2025",
+    "additionalParam": "",
+    "paymentCode": "T1",
+    "resultCode": "00",
+    "merchantUserId": "",
+    "reference": "DEV_REF_001",
+    "signature": "skip_in_dev"
+  }
+}

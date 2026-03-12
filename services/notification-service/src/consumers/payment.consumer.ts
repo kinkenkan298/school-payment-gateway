@@ -5,7 +5,6 @@ const logger = createLogger('payment-consumer');
 const notificationService = new NotificationService();
 
 export const startPaymentConsumer = async (): Promise<void> => {
-  // Consumer payment.success
   await consumeEvent<PaymentSuccessPayload>(
     EXCHANGES.PAYMENT,
     QUEUES.PAYMENT_SUCCESS_NOTIFICATION,
@@ -16,7 +15,6 @@ export const startPaymentConsumer = async (): Promise<void> => {
     },
   );
 
-  // Consumer payment.failed
   await consumeEvent<PaymentSuccessPayload>(
     EXCHANGES.PAYMENT,
     QUEUES.PAYMENT_FAILED_NOTIFICATION,

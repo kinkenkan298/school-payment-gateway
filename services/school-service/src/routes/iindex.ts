@@ -14,13 +14,10 @@ import {
 const router: Router = Router();
 const school = new SchoolController();
 
-// ── Public ────────────────────────────────────────────────
 router.get('/npsn/:npsn', school.getSchoolByNpsn.bind(school));
 
-// ── Protected ─────────────────────────────────────────────
 router.use(authenticate);
 
-// School Admin — kelola sekolah sendiri
 router.get(
   '/me',
   authorize(ROLES.SCHOOL_ADMIN, ROLES.SCHOOL_STAFF),
@@ -39,7 +36,6 @@ router.patch(
   school.updateMyBankInfo.bind(school),
 );
 
-// Platform Admin — kelola semua sekolah
 router.get('/', authorize(ROLES.PLATFORM_ADMIN, ROLES.SUPER_ADMIN), school.getSchools.bind(school));
 router.post(
   '/',

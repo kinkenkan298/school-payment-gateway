@@ -14,14 +14,12 @@ const envSchema = z.object({
 
   RABBITMQ_URL: z.string().default('amqp://guest:guest@localhost:5672'),
 
-  // SMTP
   SMTP_HOST: z.string().min(1),
   SMTP_PORT: z.string().regex(/^\d+$/).transform(Number).default(587),
   SMTP_USER: z.string().min(1),
   SMTP_PASS: z.string().min(1),
   SMTP_FROM: z.string().min(1),
 
-  // FCM
   FCM_PROJECT_ID: z.string().default(''),
   FCM_CLIENT_EMAIL: z.string().default(''),
   FCM_PRIVATE_KEY: z.string().default(''),

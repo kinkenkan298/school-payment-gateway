@@ -37,7 +37,6 @@ const sppBillSchema = new Schema<ISPPBill>(
   { timestamps: true },
 );
 
-// Satu tagihan per siswa per bulan per tahun
 sppBillSchema.index({ studentId: 1, month: 1, year: 1 }, { unique: true });
 sppBillSchema.index({ schoolId: 1, status: 1 });
 sppBillSchema.index({ schoolId: 1, academicYear: 1 });

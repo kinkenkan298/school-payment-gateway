@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import {
   createLogger,
   buildPaginationMeta,
@@ -23,9 +23,7 @@ const ERROR_CODES = {
 } as const;
 
 export class PaymentService {
-  // ── Create Payment (Workflow 1) ──────────────────────────
   async createPayment(dto: CreatePaymentDto): Promise<IPayment> {
-    // 1. Cek tagihan dari student-service
     const bill = await this.getBillFromStudentService(dto.billId, dto.schoolId);
     if (!bill) throw new Error(ERROR_CODES.BILL_NOT_FOUND);
     if (bill.status === 'paid') throw new Error(ERROR_CODES.BILL_ALREADY_PAID);
@@ -39,13 +37,11 @@ export class PaymentService {
       'Bill ID check',
     );
 
-    // 2. Hitung fee
     const adminFee = calculateAdminFee(bill.amount);
     const totalAmount = bill.amount + adminFee;
     const expiredAt = calculateExpiredAt();
     const externalId = generateExternalId(dto.schoolId);
 
-    // 3. Buat payment di provider
     const provider = getProvider(dto.provider);
     const providerResult = await provider.createPayment({
       externalId,
@@ -58,7 +54,6 @@ export class PaymentService {
       expiredAt,
     });
 
-    // 4. Simpan ke database
     const payment = await PaymentModel.create({
       schoolId: new mongoose.Types.ObjectId(dto.schoolId),
       studentId: new mongoose.Types.ObjectId(dto.studentId),
@@ -90,7 +85,6 @@ export class PaymentService {
     return payment;
   }
 
-  // ── Handle Webhook dari Provider ────────────────────────
   async handleWebhook(
     provider: string,
     payload: Record<string, unknown>,
@@ -98,7 +92,6 @@ export class PaymentService {
   ): Promise<void> {
     const providerInstance = getProvider(provider as any);
 
-    // Verifikasi signature
     const isValid = providerInstance.verifyWebhook(payload, signature);
     if (!isValid) {
       logger.warn({ provider }, 'Invalid webhook signature');
@@ -136,7 +129,6 @@ export class PaymentService {
       ...(status === 'success' && { paidAt: new Date() }),
     });
 
-    // Publish event ke RabbitMQ
     if (status === 'success') {
       const student = await this.getStudentFromStudentService(payment.studentId.toString());
 
@@ -174,7 +166,6 @@ export class PaymentService {
     }
   }
 
-  // ── Check Payment Status ─────────────────────────────────
   async checkStatus(id: string): Promise<IPayment> {
     const payment = await PaymentModel.findById(id);
     if (!payment) throw new Error(ERROR_CODES.PAYMENT_NOT_FOUND);
@@ -195,7 +186,6 @@ export class PaymentService {
           ...(result.status === 'success' && { paidAt: new Date() }),
         });
 
-        // Publish event ke RabbitMQ sama seperti webhook
         if (result.status === 'success') {
           const student = await this.getStudentFromStudentService(payment.studentId.toString());
 
@@ -238,7 +228,6 @@ export class PaymentService {
     return (await PaymentModel.findById(id))!;
   }
 
-  // ── Read ─────────────────────────────────────────────────
   async getPayments(query: PaymentPaginationDto) {
     const { page, limit, schoolId, studentId, billId, status, provider, startDate, endDate } =
       query;
@@ -294,7 +283,6 @@ export class PaymentService {
     };
   }
 
-  // ── Private Helpers ──────────────────────────────────────
   private async getBillFromStudentService(billId: string, schoolId: string) {
     try {
       logger.info('Fetching bill from student service');
@@ -324,6 +312,76 @@ export class PaymentService {
       return response.data.data;
     } catch {
       return null;
+    }
+  }
+
+  async handleWebhookFromQueue(data: {
+    provider: string;
+    externalId: string;
+    status: 'success' | 'pending' | 'failed' | 'expired';
+    rawPayload: Record<string, unknown>;
+  }): Promise<void> {
+    const { provider, externalId, status, rawPayload } = data;
+
+    const payment = await PaymentModel.findOne({ externalId });
+    if (!payment) {
+      logger.warn({ externalId }, 'Payment not found for webhook event');
+      return;
+    }
+
+    if (payment.status === 'success' || payment.status === 'failed') {
+      logger.info({ externalId }, 'Payment already processed, skipping');
+      return;
+    }
+
+    const newStatus =
+      status === 'success'
+        ? 'success'
+        : status === 'expired'
+          ? 'expired'
+          : status === 'failed'
+            ? 'failed'
+            : payment.status;
+
+    await PaymentModel.findByIdAndUpdate(payment._id, {
+      status: newStatus,
+      providerResponse: rawPayload,
+      ...(status === 'success' && { paidAt: new Date() }),
+    });
+
+    if (status === 'success') {
+      const student = await this.getStudentFromStudentService(payment.studentId.toString());
+
+      await publishEvent(EXCHANGES.PAYMENT, 'payment.success', {
+        paymentId: payment._id.toString(),
+        schoolId: payment.schoolId.toString(),
+        studentId: payment.studentId.toString(),
+        billId: payment.billId.toString(),
+        amount: payment.amount,
+        totalAmount: payment.totalAmount,
+        provider,
+        paidAt: new Date(),
+        studentName: student?.name || null,
+        parentName: student?.parentName || null,
+        parentEmail: student?.parentEmail || null,
+        parentPhone: student?.parentPhone || null,
+        parentFcmToken: student?.fcmToken || null,
+        month: payment.description.split(' ')[1]?.split('/')[0],
+        year: payment.description.split(' ')[1]?.split('/')[1],
+      });
+
+      logger.info(
+        { paymentId: payment._id.toString(), externalId },
+        'Payment success from webhook queue',
+      );
+    } else if (status === 'failed' || status === 'expired') {
+      await publishEvent(EXCHANGES.PAYMENT, 'payment.failed', {
+        paymentId: payment._id.toString(),
+        schoolId: payment.schoolId.toString(),
+        studentId: payment.studentId.toString(),
+        billId: payment.billId.toString(),
+        status: newStatus,
+      });
     }
   }
 }
