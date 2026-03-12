@@ -135,7 +135,6 @@ export class SchoolController {
     }
   }
 
-  // Khusus school admin — get own school
   async getMySchool(req: AuthRequest, res: Response): Promise<void> {
     try {
       const school = await schoolService.getSchoolById(req.user!.schoolId as string);

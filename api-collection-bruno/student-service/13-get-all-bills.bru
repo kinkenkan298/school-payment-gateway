@@ -5,16 +5,9 @@ meta {
 }
 
 get {
-  url: {{base_url_student}}/bills?page=1&limit=10&status=unpaid
+  url: {{base_url_student}}/bills?page=1&limit=10&academicYear=2024/2025&status=unpaid
   body: none
   auth: bearer
-}
-
-params:query {
-  page: 1
-  limit: 10
-  status: unpaid
-  ~academicYear: 2024/2025
 }
 
 auth:bearer {

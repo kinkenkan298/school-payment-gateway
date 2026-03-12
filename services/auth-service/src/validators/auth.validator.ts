@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { ROLES } from '@school-payment-gateway/shared-lib';
 
 const passwordSchema = z
   .string()
@@ -9,7 +8,6 @@ const passwordSchema = z
     'Password harus mengandung huruf besar, huruf kecil, dan angka',
   );
 
-// ── Register ──────────────────────────────────────────────
 export const registerParentSchema = z.object({
   name: z.string().min(2).max(100),
   email: z.email(),
@@ -25,18 +23,15 @@ export const registerSchoolAdminSchema = z.object({
   schoolId: z.string().min(1),
 });
 
-// ── Login ─────────────────────────────────────────────────
 export const loginSchema = z.object({
   email: z.email(),
   password: z.string().min(1),
 });
 
-// ── Token ─────────────────────────────────────────────────
 export const refreshTokenSchema = z.object({
   refreshToken: z.string().min(1),
 });
 
-// ── Password ──────────────────────────────────────────────
 export const forgotPasswordSchema = z.object({
   email: z.email(),
 });
@@ -51,13 +46,11 @@ export const changePasswordSchema = z.object({
   newPassword: passwordSchema,
 });
 
-// ── API Key ───────────────────────────────────────────────
 export const createApiKeySchema = z.object({
   name: z.string().min(1).max(100),
   expiresAt: z.iso.datetime().optional(),
 });
 
-// ── Types ─────────────────────────────────────────────────
 export type RegisterParentDto = z.infer<typeof registerParentSchema>;
 export type RegisterSchoolAdminDto = z.infer<typeof registerSchoolAdminSchema>;
 export type LoginDto = z.infer<typeof loginSchema>;

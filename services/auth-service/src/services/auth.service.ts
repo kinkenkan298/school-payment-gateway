@@ -44,7 +44,6 @@ export class AuthService {
     this.emailService = new EmailService();
   }
 
-  // ── Register ────────────────────────────────────────────
   async registerParent(dto: RegisterParentDto) {
     const existing = await UserModel.findOne({ email: dto.email });
     if (existing) throw new Error(ERROR_CODES.EMAIL_EXISTS);
@@ -101,7 +100,6 @@ export class AuthService {
     return user;
   }
 
-  // ── Login ───────────────────────────────────────────────
   async login(dto: LoginDto) {
     const user = await UserModel.findOne({ email: dto.email }).select('+password');
     if (!user) throw new Error(ERROR_CODES.INVALID_CREDENTIALS);
@@ -122,7 +120,6 @@ export class AuthService {
     return { accessToken, refreshToken, user: userWithoutPassword };
   }
 
-  // ── Token ───────────────────────────────────────────────
   async refreshToken(token: string) {
     const tokenDoc = await TokenModel.findOne({
       token,
@@ -149,7 +146,6 @@ export class AuthService {
     await TokenModel.findOneAndUpdate({ token: refreshToken, type: 'refresh' }, { isUsed: true });
   }
 
-  // ── Email Verification ──────────────────────────────────
   async verifyEmail(token: string): Promise<void> {
     const tokenDoc = await TokenModel.findOne({
       token,
@@ -175,12 +171,10 @@ export class AuthService {
     logger.info({ userId: tokenDoc.userId.toString() }, 'Email verified');
   }
 
-  // ── Password ────────────────────────────────────────────
   async forgotPassword(email: string): Promise<void> {
     const user = await UserModel.findOne({ email });
-    if (!user) return; // silent — jangan expose apakah email exist
+    if (!user) return;
 
-    // Invalidate token lama jika ada
     await TokenModel.updateMany(
       { userId: user._id, type: 'password_reset', isUsed: false },
       { isUsed: true },
@@ -228,7 +222,6 @@ export class AuthService {
     logger.info({ userId }, 'Password changed');
   }
 
-  // ── API Key ─────────────────────────────────────────────
   async createApiKey(userId: string, schoolId: string, dto: CreateApiKeyDto) {
     const rawKey = generateApiKey();
     const hashed = hashApiKey(rawKey);
@@ -244,7 +237,7 @@ export class AuthService {
     });
 
     logger.info({ userId, schoolId }, 'API key created');
-    return rawKey; // hanya dikembalikan sekali
+    return rawKey;
   }
 
   async revokeApiKey(apiKeyId: string, schoolId: string): Promise<void> {
@@ -260,7 +253,6 @@ export class AuthService {
     return ApiKeyModel.find({ schoolId, isActive: true }).select('-hashedKey');
   }
 
-  // ── Private Helpers ─────────────────────────────────────
   private generateAccessToken(user: InstanceType<typeof UserModel>): string {
     return signJwt(
       {

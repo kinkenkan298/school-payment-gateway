@@ -23,6 +23,11 @@ router.use('/api/v1/settlements', authenticate, settlementProxy);
 router.use('/api/v1/reports', authenticate, reportingProxy);
 router.use('/api/v1/webhooks', authenticate, webhookProxy);
 
-router.use('/api/v1/admin', authenticate, authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN), adminProxy);
+router.use(
+  '/api/v1/admin',
+  authenticate,
+  authorize(ROLES.SCHOOL_ADMIN, ROLES.SUPER_ADMIN),
+  adminProxy,
+);
 
 export default router;
