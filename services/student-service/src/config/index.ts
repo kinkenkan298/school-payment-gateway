@@ -12,6 +12,10 @@ const envSchema = z.object({
   MONGODB_URI: z.string().min(1, 'MONGODB_URI is required'),
   MONGODB_DB_NAME: z.string().default('student_db'),
 
+  INTERNAL_SERVICE_SECRET: z
+    .string()
+    .min(32, 'INTERNAL_SERVICE_SECRET must be at least 32 characters'),
+
   JWT_SECRET: z.string().min(32, 'JWT_SECRET must be at least 32 characters'),
 
   MAX_IMPORT_FILE_SIZE: z.string().regex(/^\d+$/).transform(Number).default(5242880), // 5MB

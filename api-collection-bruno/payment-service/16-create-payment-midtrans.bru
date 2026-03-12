@@ -1,0 +1,35 @@
+meta {
+  name: Create Payment - Midtrans
+  type: http
+  seq: 16
+}
+
+post {
+  url: {{base_url_payment}}/payments
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "schoolId": "{{school_id}}",
+    "studentId": "{{student_id}}",
+    "billId": "{{bill_id}}",
+    "method": "qris",
+    "provider": "midtrans",
+    "payerName": "Budi Santoso",
+    "payerEmail": "budi@gmail.com",
+    "payerPhone": "081234567890"
+  }
+}
+
+script:post-response {
+  if (res.status === 201) {
+    bru.setEnvVar("payment_id", res.body.data._id);
+    bru.setEnvVar("external_id", res.body.data.externalId);
+  }
+}

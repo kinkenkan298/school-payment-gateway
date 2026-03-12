@@ -5,11 +5,13 @@ import {
   paginatedResponse,
   errorResponse,
   HTTP_STATUS,
+  createLogger,
 } from '@school-payment-gateway/shared-lib';
 import { AuthRequest } from '@/middlewares/auth.middleware';
 import { billPaginationSchema } from '@/validators/student.validator';
 
 const sppBillService = new SPPBillService();
+const logger = createLogger('spp-bill-controller');
 
 const ERROR_STATUS: Record<string, number> = {
   BILL_NOT_FOUND: HTTP_STATUS.NOT_FOUND,
@@ -21,6 +23,7 @@ const ERROR_STATUS: Record<string, number> = {
 const handleError = (err: unknown, res: Response): void => {
   const message = err instanceof Error ? err.message : 'Something went wrong';
   const status = ERROR_STATUS[message] ?? HTTP_STATUS.INTERNAL_ERROR;
+  logger.error(`Error: ${message}, Status: ${status}`);
   res.status(status).json(errorResponse(message));
 };
 
@@ -65,8 +68,11 @@ export class SPPBillController {
 
   async getBillById(req: AuthRequest, res: Response): Promise<void> {
     try {
-      const schoolId = req.user!.schoolId as string;
-      const bill = await sppBillService.getBillById(schoolId, req.params.id);
+      const isInternal = !req.user;
+      const bill = isInternal
+        ? await sppBillService.getBillByInternal(req.params.id)
+        : await sppBillService.getBillById(req.user!.schoolId as string, req.params.id);
+
       res.status(HTTP_STATUS.OK).json(successResponse(bill));
     } catch (err) {
       handleError(err, res);
