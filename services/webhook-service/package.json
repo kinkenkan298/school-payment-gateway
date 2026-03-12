@@ -1,24 +1,21 @@
 {
-  "name": "@school-payment-gateway/payment-service",
+  "name": "@school-payment-gateway/webhook-service",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "build": "tsc && tsc-alias",
     "dev": "tsx --watch src/server.ts",
     "start": "node dist/server.js",
-    "type-check": "tsc --noEmit",
-    "lint": "eslint src/"
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@school-payment-gateway/shared-lib": "workspace:^",
     "@school-payment-gateway/types": "workspace:^",
-    "axios": "^1.13.6",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "helmet": "^8.1.0",
     "mongoose": "^9.2.4",
-    "uuid": "^13.0.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
