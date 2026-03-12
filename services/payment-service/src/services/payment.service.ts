@@ -79,6 +79,9 @@ export class PaymentService {
       paymentUrl: providerResult.paymentUrl,
       providerTransactionId: providerResult.providerTransactionId,
       providerResponse: providerResult.providerResponse,
+      // paymentUrl: `https://mockpayment.com/pay/${externalId}`,
+      // providerTransactionId: `mock-${externalId}`,
+      // providerResponse: { mock: true, externalId },
       expiredAt,
     });
 
