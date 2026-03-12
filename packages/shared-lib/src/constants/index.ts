@@ -20,6 +20,9 @@ export const QUEUES = {
 
   PAYMENT_SUCCESS: 'payment.success.student',
   PAYMENT_FAILED: 'payment.failed.student',
+
+  PAYMENT_SUCCESS_NOTIFICATION: 'payment.success.notification',
+  PAYMENT_FAILED_NOTIFICATION: 'payment.failed.notification',
 } as const;
 
 export const HTTP_STATUS = {
