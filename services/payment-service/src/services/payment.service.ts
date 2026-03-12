@@ -30,6 +30,15 @@ export class PaymentService {
     if (!bill) throw new Error(ERROR_CODES.BILL_NOT_FOUND);
     if (bill.status === 'paid') throw new Error(ERROR_CODES.BILL_ALREADY_PAID);
 
+    logger.info(
+      {
+        dtoBillId: dto.billId,
+        billIdFromService: bill._id,
+        match: dto.billId === bill._id.toString(),
+      },
+      'Bill ID check',
+    );
+
     // 2. Hitung fee
     const adminFee = calculateAdminFee(bill.amount);
     const totalAmount = bill.amount + adminFee;
@@ -70,9 +79,6 @@ export class PaymentService {
       paymentUrl: providerResult.paymentUrl,
       providerTransactionId: providerResult.providerTransactionId,
       providerResponse: providerResult.providerResponse,
-      // paymentUrl: `https://mockpayment.com/pay/${externalId}`,
-      // providerTransactionId: `mock-${externalId}`,
-      // providerResponse: { mock: true, externalId },
       expiredAt,
     });
 
@@ -178,6 +184,33 @@ export class PaymentService {
           providerResponse: result.providerResponse,
           ...(result.status === 'success' && { paidAt: new Date() }),
         });
+
+        // Publish event ke RabbitMQ sama seperti webhook
+        if (result.status === 'success') {
+          await publishEvent(EXCHANGES.PAYMENT, 'payment.success', {
+            paymentId: payment._id.toString(),
+            schoolId: payment.schoolId.toString(),
+            studentId: payment.studentId.toString(),
+            billId: payment.billId.toString(),
+            amount: payment.amount,
+            totalAmount: payment.totalAmount,
+            provider: payment.provider,
+            paidAt: new Date(),
+          });
+
+          logger.info(
+            { paymentId: payment._id.toString() },
+            'Payment success event published from checkStatus',
+          );
+        } else if (result.status === 'failed' || result.status === 'expired') {
+          await publishEvent(EXCHANGES.PAYMENT, 'payment.failed', {
+            paymentId: payment._id.toString(),
+            schoolId: payment.schoolId.toString(),
+            studentId: payment.studentId.toString(),
+            billId: payment.billId.toString(),
+            status: result.status,
+          });
+        }
       }
     }
 

@@ -17,6 +17,9 @@ export const QUEUES = {
   STUDENT_IMPORT: 'student.import.queue',
   BILL_GENERATED: 'bill.generated.queue',
   BILL_OVERDUE: 'bill.overdue.queue',
+
+  PAYMENT_SUCCESS: 'payment.success.student',
+  PAYMENT_FAILED: 'payment.failed.student',
 } as const;
 
 export const HTTP_STATUS = {

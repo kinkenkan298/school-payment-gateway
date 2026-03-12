@@ -19,6 +19,8 @@ const envSchema = z.object({
   JWT_SECRET: z.string().min(32, 'JWT_SECRET must be at least 32 characters'),
 
   MAX_IMPORT_FILE_SIZE: z.string().regex(/^\d+$/).transform(Number).default(5242880), // 5MB
+
+  RABBITMQ_URL: z.string().min(1, 'RABBITMQ_URI is required'),
 });
 
 type Env = z.infer<typeof envSchema>;
