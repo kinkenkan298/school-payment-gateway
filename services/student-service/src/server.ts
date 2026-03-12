@@ -1,6 +1,7 @@
-import { createLogger, connectDatabase } from '@school-payment-gateway/shared-lib';
+import { createLogger, connectDatabase, connectQueue } from '@school-payment-gateway/shared-lib';
 import { app } from '@/app';
 import { env } from '@/config';
+import { startPaymentConsumer } from './consumer/payment.consumer';
 
 const logger = createLogger('student-service');
 
@@ -9,6 +10,9 @@ const start = async () => {
     uri: env.MONGODB_URI,
     dbName: env.MONGODB_DB_NAME,
   });
+
+  await connectQueue(env.RABBITMQ_URL);
+  await startPaymentConsumer();
 
   const server = app.listen(env.PORT, () => {
     logger.info({ port: env.PORT, env: env.NODE_ENV }, 'Student Service started');
