@@ -1,0 +1,29 @@
+meta {
+  name: [Webhook] Xendit - Payment Success
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{base_url_payment}}/payments/webhook/xendit
+  body: json
+  auth: none
+}
+
+headers {
+  x-callback-token: skip_in_dev
+}
+
+body:json {
+  {
+    "id": "XENDIT_INV_001",
+    "external_id": "{{external_id}}",
+    "status": "PAID",
+    "amount": 255000,
+    "paid_amount": 255000,
+    "currency": "IDR",
+    "payment_method": "VIRTUAL_ACCOUNT",
+    "payment_channel": "BNI",
+    "paid_at": "2025-03-12T10:00:00.000Z"
+  }
+}

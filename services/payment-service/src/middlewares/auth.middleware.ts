@@ -10,7 +10,7 @@ import { env } from '@/config';
 
 const logger = createLogger('auth-middleware');
 
-export interface AuthRequest extends Request<{ id: string; nis: string; studentId: string }> {
+export interface AuthRequest extends Request<{ id?: string }> {
   user?: JwtPayload;
 }
 
@@ -46,20 +46,4 @@ export const authorize = (...roles: string[]) => {
     }
     next();
   };
-};
-
-export const authenticateInternal = (req: Request, res: Response, next: NextFunction): void => {
-  const secret = req.headers['x-internal-secret'] as string;
-
-  logger.info('Received internal request with secret:' + secret);
-  logger.info('Expected internal secret:' + env.INTERNAL_SERVICE_SECRET);
-  logger.info('Request path:' + req.path);
-
-  if (secret && secret === env.INTERNAL_SERVICE_SECRET) {
-    logger.info('Internal authentication successful');
-    next();
-    return;
-  }
-
-  authenticate(req as AuthRequest, res, next);
 };

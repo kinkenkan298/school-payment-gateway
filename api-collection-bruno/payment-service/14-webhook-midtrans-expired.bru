@@ -1,0 +1,25 @@
+meta {
+  name: [Webhook] Midtrans - Payment Expired
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{base_url_payment}}/payments/webhook/midtrans
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "order_id": "{{external_id}}",
+    "status_code": "407",
+    "gross_amount": "255000.00",
+    "transaction_id": "MIDTRANS_TRX_003",
+    "transaction_status": "expire",
+    "payment_type": "bank_transfer",
+    "transaction_time": "2025-03-12 10:00:00",
+    "currency": "IDR",
+    "signature_key": "skip_in_dev"
+  }
+}

@@ -1,9 +1,30 @@
 {
   "folders": [
-    { "path": "apps/auth-service" },
-    { "path": "packages/types" },
-    { "path": "packages/shared-lib" },
-    { "path": "services/api-gateway" },
-    { "path": "services/auth-service" },
+    { "name": "Root", "path": "." },
+    { "name": "auth-service", "path": "apps/auth-service" },
+    { "name": "school-service", "path": "apps/school-service" },
+    { "name": "shared-lib", "path": "packages/shared-lib" },
+    { "name": "types", "path": "packages/types" },
   ],
+  "settings": {
+    "js/ts.tsdk.path": "node_modules/typescript/lib",
+    "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+    "files.watcherExclude": {
+      "**/node_modules/**": true,
+      "**/dist/**": true,
+      "**/.turbo/**": true,
+      "**/build/**": true,
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.turbo": true,
+    },
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.turbo": true,
+    },
+    "js/ts.tsserver.automaticTypeAcquisition.enabled": true,
+  },
 }

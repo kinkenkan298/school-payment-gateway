@@ -1,11 +1,11 @@
 meta {
-  name: Get Student Bills
+  name: Check Payment Status
   type: http
-  seq: 15
+  seq: 4
 }
 
 get {
-  url: {{base_url_student}}/bills/students/{{student_id}}
+  url: {{base_url_payment}}/payments/{{payment_id}}/status
   body: none
   auth: bearer
 }

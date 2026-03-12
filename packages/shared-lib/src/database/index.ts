@@ -10,6 +10,10 @@ interface ConnectOptions {
 
 export const connectDatabase = async ({ uri, dbName }: ConnectOptions): Promise<void> => {
   try {
+    if (mongoose.connection.readyState === 1) {
+      logger.warn('MongoDB is already connected');
+      return;
+    }
     await mongoose.connect(uri, {
       dbName,
       maxPoolSize: 10,
