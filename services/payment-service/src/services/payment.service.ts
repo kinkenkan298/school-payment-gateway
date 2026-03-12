@@ -79,9 +79,6 @@ export class PaymentService {
       paymentUrl: providerResult.paymentUrl,
       providerTransactionId: providerResult.providerTransactionId,
       providerResponse: providerResult.providerResponse,
-      // paymentUrl: `https://mockpayment.com/pay/${externalId}`,
-      // providerTransactionId: `mock-${externalId}`,
-      // providerResponse: { mock: true, externalId },
       expiredAt,
     });
 
@@ -141,6 +138,8 @@ export class PaymentService {
 
     // Publish event ke RabbitMQ
     if (status === 'success') {
+      const student = await this.getStudentFromStudentService(payment.studentId.toString());
+
       await publishEvent(EXCHANGES.PAYMENT, 'payment.success', {
         paymentId: payment._id.toString(),
         schoolId: payment.schoolId.toString(),
@@ -150,6 +149,14 @@ export class PaymentService {
         totalAmount: payment.totalAmount,
         provider,
         paidAt: new Date(),
+
+        studentName: student?.name || null,
+        parentName: student?.parentName || null,
+        parentEmail: student?.parentEmail || null,
+        parentPhone: student?.parentPhone || null,
+        parentFcmToken: student?.fcmToken || null,
+        month: payment.description.split(' ')[1]?.split('/')[0],
+        year: payment.description.split(' ')[1]?.split('/')[1],
       });
 
       logger.info(
@@ -190,6 +197,8 @@ export class PaymentService {
 
         // Publish event ke RabbitMQ sama seperti webhook
         if (result.status === 'success') {
+          const student = await this.getStudentFromStudentService(payment.studentId.toString());
+
           await publishEvent(EXCHANGES.PAYMENT, 'payment.success', {
             paymentId: payment._id.toString(),
             schoolId: payment.schoolId.toString(),
@@ -199,6 +208,15 @@ export class PaymentService {
             totalAmount: payment.totalAmount,
             provider: payment.provider,
             paidAt: new Date(),
+
+            studentName: student?.name || null,
+            parentName: student?.parentName || null,
+            parentEmail: student?.parentEmail || null,
+            parentPhone: student?.parentPhone || null,
+            parentFcmToken: student?.fcmToken || null,
+
+            month: payment.description.split(' ')[1]?.split('/')[0],
+            year: payment.description.split(' ')[1]?.split('/')[1],
           });
 
           logger.info(
@@ -294,6 +312,17 @@ export class PaymentService {
           )}`,
         );
       }
+      return null;
+    }
+  }
+
+  private async getStudentFromStudentService(studentId: string) {
+    try {
+      const response = await axios.get(`${env.STUDENT_SERVICE_URL}/students/${studentId}`, {
+        headers: { 'x-internal-secret': env.INTERNAL_SERVICE_SECRET },
+      });
+      return response.data.data;
+    } catch {
       return null;
     }
   }
