@@ -314,4 +314,74 @@ export class PaymentService {
       return null;
     }
   }
+
+  async handleWebhookFromQueue(data: {
+    provider: string;
+    externalId: string;
+    status: 'success' | 'pending' | 'failed' | 'expired';
+    rawPayload: Record<string, unknown>;
+  }): Promise<void> {
+    const { provider, externalId, status, rawPayload } = data;
+
+    const payment = await PaymentModel.findOne({ externalId });
+    if (!payment) {
+      logger.warn({ externalId }, 'Payment not found for webhook event');
+      return;
+    }
+
+    if (payment.status === 'success' || payment.status === 'failed') {
+      logger.info({ externalId }, 'Payment already processed, skipping');
+      return;
+    }
+
+    const newStatus =
+      status === 'success'
+        ? 'success'
+        : status === 'expired'
+          ? 'expired'
+          : status === 'failed'
+            ? 'failed'
+            : payment.status;
+
+    await PaymentModel.findByIdAndUpdate(payment._id, {
+      status: newStatus,
+      providerResponse: rawPayload,
+      ...(status === 'success' && { paidAt: new Date() }),
+    });
+
+    if (status === 'success') {
+      const student = await this.getStudentFromStudentService(payment.studentId.toString());
+
+      await publishEvent(EXCHANGES.PAYMENT, 'payment.success', {
+        paymentId: payment._id.toString(),
+        schoolId: payment.schoolId.toString(),
+        studentId: payment.studentId.toString(),
+        billId: payment.billId.toString(),
+        amount: payment.amount,
+        totalAmount: payment.totalAmount,
+        provider,
+        paidAt: new Date(),
+        studentName: student?.name || null,
+        parentName: student?.parentName || null,
+        parentEmail: student?.parentEmail || null,
+        parentPhone: student?.parentPhone || null,
+        parentFcmToken: student?.fcmToken || null,
+        month: payment.description.split(' ')[1]?.split('/')[0],
+        year: payment.description.split(' ')[1]?.split('/')[1],
+      });
+
+      logger.info(
+        { paymentId: payment._id.toString(), externalId },
+        'Payment success from webhook queue',
+      );
+    } else if (status === 'failed' || status === 'expired') {
+      await publishEvent(EXCHANGES.PAYMENT, 'payment.failed', {
+        paymentId: payment._id.toString(),
+        schoolId: payment.schoolId.toString(),
+        studentId: payment.studentId.toString(),
+        billId: payment.billId.toString(),
+        status: newStatus,
+      });
+    }
+  }
 }

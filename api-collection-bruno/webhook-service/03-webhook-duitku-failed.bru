@@ -1,11 +1,11 @@
 meta {
-  name: [Webhook] Duitku - Success (resultCode 00)
+  name: [Webhook] Duitku - Failed (resultCode 02)
   type: http
-  seq: 8
+  seq: 3
 }
 
 post {
-  url: {{base_url_payment}}/payments/webhook/duitku
+  url: {{base_url_webhook}}/webhooks/duitku
   body: json
   auth: none
 }
@@ -18,9 +18,9 @@ body:json {
     "productDetail": "SPP 3/2025",
     "additionalParam": "",
     "paymentCode": "T1",
-    "resultCode": "00",
+    "resultCode": "02",
     "merchantUserId": "",
-    "reference": "DEV_REF_001",
+    "reference": "DEV_REF_003",
     "signature": "skip_in_dev"
   }
 }

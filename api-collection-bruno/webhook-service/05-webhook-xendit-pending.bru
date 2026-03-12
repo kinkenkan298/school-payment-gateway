@@ -1,0 +1,25 @@
+meta {
+  name: [Webhook] Xendit - Pending (PENDING)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url_webhook}}/webhooks/xendit
+  body: json
+  auth: none
+}
+
+headers {
+  x-callback-token: skip_in_dev
+}
+
+body:json {
+  {
+    "id": "XENDIT_INV_002",
+    "external_id": "{{external_id}}",
+    "status": "PENDING",
+    "amount": 255000,
+    "currency": "IDR"
+  }
+}

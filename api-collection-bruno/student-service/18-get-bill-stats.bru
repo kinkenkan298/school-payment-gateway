@@ -5,13 +5,9 @@ meta {
 }
 
 get {
-  url: {{base_url_student}}/bills/stats
+  url: {{base_url_student}}/bills/stats?academicYear=2024/2025
   body: none
   auth: bearer
-}
-
-params:query {
-  ~academicYear: 2024/2025
 }
 
 auth:bearer {

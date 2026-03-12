@@ -27,10 +27,6 @@ body:json {
   }
 }
 
-vars:pre-request {
-  bill_id: 69b2882902736ed0a5cdd22f
-}
-
 script:post-response {
   if (res.status === 201) {
     bru.setEnvVar("payment_id", res.body.data._id);

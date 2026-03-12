@@ -1,9 +1,8 @@
 import { createLogger, connectDatabase, connectQueue } from '@school-payment-gateway/shared-lib';
 import { app } from '@/app';
 import { env } from '@/config';
-import { startWebhookConsumer } from './consumer/payment.consumer';
 
-const logger = createLogger('payment-service');
+const logger = createLogger('webhook-service');
 
 const start = async () => {
   await connectDatabase({
@@ -12,18 +11,14 @@ const start = async () => {
   });
 
   await connectQueue(env.RABBITMQ_URL);
-  await startWebhookConsumer();
 
   const server = app.listen(env.PORT, () => {
-    logger.info({ port: env.PORT, env: env.NODE_ENV }, 'Payment Service started');
+    logger.info({ port: env.PORT }, 'Webhook Service started');
   });
 
   const shutdown = async (signal: string) => {
     logger.info({ signal }, 'Shutdown signal received');
-    server.close(() => {
-      logger.info('Payment service stopped');
-      process.exit(0);
-    });
+    server.close(() => process.exit(0));
     setTimeout(() => process.exit(1), 10000);
   };
 
