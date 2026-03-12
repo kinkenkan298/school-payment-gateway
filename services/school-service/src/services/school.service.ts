@@ -20,7 +20,6 @@ const ERROR_CODES = {
 } as const;
 
 export class SchoolService {
-  // ── Create ──────────────────────────────────────────────
   async createSchool(dto: CreateSchoolDto): Promise<ISchool> {
     const existingNpsn = await SchoolModel.findOne({ npsn: dto.npsn });
     if (existingNpsn) throw new Error(ERROR_CODES.NPSN_EXISTS);
@@ -34,7 +33,6 @@ export class SchoolService {
     return school;
   }
 
-  // ── Read ────────────────────────────────────────────────
   async getSchools(query: PaginationDto) {
     const { page, limit, search, status, level, province } = query;
     const skip = (page - 1) * limit;
@@ -71,7 +69,6 @@ export class SchoolService {
     return school;
   }
 
-  // ── Update ──────────────────────────────────────────────
   async updateSchool(id: string, dto: UpdateSchoolDto): Promise<ISchool> {
     const school = await SchoolModel.findByIdAndUpdate(id, dto, { new: true });
     if (!school) throw new Error(ERROR_CODES.SCHOOL_NOT_FOUND);
@@ -91,7 +88,6 @@ export class SchoolService {
   async updateKycStatus(id: string, dto: UpdateKycDto): Promise<ISchool> {
     const updateData: Partial<ISchool> = { kycStatus: dto.kycStatus };
 
-    // Auto activate school ketika KYC verified
     if (dto.kycStatus === 'verified') {
       updateData.status = 'active';
     }
@@ -111,7 +107,6 @@ export class SchoolService {
     return school;
   }
 
-  // ── Delete ──────────────────────────────────────────────
   async deleteSchool(id: string): Promise<void> {
     const school = await SchoolModel.findByIdAndUpdate(id, { status: 'inactive' }, { new: true });
     if (!school) throw new Error(ERROR_CODES.SCHOOL_NOT_FOUND);
@@ -119,7 +114,6 @@ export class SchoolService {
     logger.info({ schoolId: id }, 'School deactivated');
   }
 
-  // ── Stats ───────────────────────────────────────────────
   async getSchoolStats() {
     const stats = await SchoolModel.aggregate([
       {

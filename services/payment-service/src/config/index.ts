@@ -21,19 +21,16 @@ const envSchema = z.object({
   STUDENT_SERVICE_URL: z.string().default('http://localhost:3003'),
   SCHOOL_SERVICE_URL: z.string().default('http://localhost:3002'),
 
-  // Duitku
   DUITKU_MERCHANT_CODE: z.string().default(''),
   DUITKU_API_KEY: z.string().default(''),
   DUITKU_BASE_URL: z.string().default('https://sandbox.duitku.com/webapi/api'),
   DUITKU_CALLBACK_URL: z.string().default('http://localhost:3004/payments/webhook/duitku'),
 
-  // Xendit
   XENDIT_SECRET_KEY: z.string().default(''),
   XENDIT_BASE_URL: z.string().default('https://api.xendit.co'),
   XENDIT_CALLBACK_URL: z.string().default('http://localhost:3004/payments/webhook/xendit'),
   XENDIT_WEBHOOK_TOKEN: z.string().default(''),
 
-  // Midtrans
   MIDTRANS_SERVER_KEY: z.string().default(''),
   MIDTRANS_BASE_URL: z.string().default('https://api.sandbox.midtrans.com/v2'),
   MIDTRANS_NOTIFICATION_URL: z.string().default('http://localhost:3004/payments/webhook/midtrans'),

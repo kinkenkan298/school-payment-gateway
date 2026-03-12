@@ -24,7 +24,6 @@ router.get('/bills/:id', authenticateInternal, bill.getBillById.bind(bill));
 
 router.use(authenticate);
 
-// ── Students ──────────────────────────────────────────────
 router.get('/students', authorize(...schoolRoles), student.getStudents.bind(student));
 router.post(
   '/students',
@@ -49,7 +48,6 @@ router.patch(
 );
 router.delete('/students/:id', authorize(ROLES.SCHOOL_ADMIN), student.deleteStudent.bind(student));
 
-// ── SPP Bills ─────────────────────────────────────────────
 router.get('/bills', authorize(...schoolRoles), bill.getBills.bind(bill));
 router.post(
   '/bills',

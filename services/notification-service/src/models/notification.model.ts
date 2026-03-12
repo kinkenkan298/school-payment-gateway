@@ -16,7 +16,7 @@ export interface INotification extends Document {
   billId?: mongoose.Types.ObjectId;
   channel: NotificationChannel;
   type: NotificationType;
-  recipient: string; // email atau FCM token
+  recipient: string;
   subject?: string;
   body: string;
   status: NotificationStatus;

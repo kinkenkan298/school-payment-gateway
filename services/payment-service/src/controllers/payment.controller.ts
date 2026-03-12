@@ -100,7 +100,6 @@ export class PaymentController {
     }
   }
 
-  // Webhook dari provider — tidak butuh auth
   async handleDuitkuWebhook(req: Request, res: Response): Promise<void> {
     try {
       await paymentService.handleWebhook('duitku', req.body, '');

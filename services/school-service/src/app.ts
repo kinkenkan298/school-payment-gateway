@@ -3,7 +3,6 @@ import helmet from 'helmet';
 import cors from 'cors';
 import { notFoundHandler, globalErrorHandler } from '@/middlewares/error.middleware';
 import { requestLogger } from '@/middlewares/request-logger.middleware';
-import { env } from '@/config';
 import router from './routes/iindex';
 
 const app: Express = express();

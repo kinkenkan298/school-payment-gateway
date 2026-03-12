@@ -41,7 +41,6 @@ const studentSchema = new Schema<IStudent>(
   { timestamps: true },
 );
 
-// NIS unik per sekolah
 studentSchema.index({ schoolId: 1, nis: 1 }, { unique: true });
 studentSchema.index({ schoolId: 1, nisn: 1 }, { unique: true });
 studentSchema.index({ schoolId: 1, academicYear: 1 });
