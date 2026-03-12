@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(requestLogger);
 
 app.get('/health', (_req, res) => {
-  res.json({ success: true, service: 'api-gateway', status: 'healthy' });
+  res.status(200).json({ success: true, service: 'api-gateway', status: 'healthy' });
 });
 
 app.use(router);

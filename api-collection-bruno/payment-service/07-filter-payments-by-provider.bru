@@ -1,0 +1,15 @@
+meta {
+  name: Filter Payments By Provider
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{base_url_payment}}/payments?page=1&limit=10&provider=duitku&schoolId={{school_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

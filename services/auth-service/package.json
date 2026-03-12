@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "tsc && tsc-alias",
-    "dev": "tsx watch src/server.ts",
+    "dev": "tsx --watch src/server.ts",
     "start": "node dist/server.js",
     "type-check": "tsc --noEmit",
     "lint": "eslint src/"

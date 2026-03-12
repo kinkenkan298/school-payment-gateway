@@ -121,6 +121,15 @@ export class SPPBillService {
     return bill;
   }
 
+  async getBillByInternal(id: string): Promise<ISPPBill> {
+    const bill = await SPPBillModel.findById(id).populate(
+      'studentId',
+      'name nis nisn className grade',
+    );
+    if (!bill) throw new Error(ERROR_CODES.BILL_NOT_FOUND);
+    return bill;
+  }
+
   async getStudentBills(schoolId: string, studentId: string, query: BillPaginationDto) {
     return this.getBills(schoolId, { ...query, studentId });
   }

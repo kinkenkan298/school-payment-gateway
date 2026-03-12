@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { StudentController } from '@/controllers/student.controller';
 import { SPPBillController } from '@/controllers/spp-bill.controller';
-import { authenticate, authorize } from '@/middlewares/auth.middleware';
+import { authenticate, authenticateInternal, authorize } from '@/middlewares/auth.middleware';
 import { validate } from '@/middlewares/validate.middleware';
 import { uploadCSV } from '@/middlewares/upload.middleware';
 import { ROLES } from '@school-payment-gateway/shared-lib';
@@ -18,6 +18,8 @@ const bill = new SPPBillController();
 
 const schoolRoles = [ROLES.SCHOOL_ADMIN, ROLES.SCHOOL_STAFF];
 const adminRoles = [ROLES.SCHOOL_ADMIN, ROLES.PLATFORM_ADMIN, ROLES.SUPER_ADMIN];
+
+router.get('/bills/:id', authenticateInternal, bill.getBillById.bind(bill));
 
 router.use(authenticate);
 
@@ -67,7 +69,6 @@ router.get(
   authorize(...schoolRoles),
   bill.getStudentBills.bind(bill),
 );
-router.get('/bills/:id', authorize(...schoolRoles), bill.getBillById.bind(bill));
 router.patch('/bills/:id/waive', authorize(ROLES.SCHOOL_ADMIN), bill.waiveBill.bind(bill));
 router.post('/bills/mark-overdue', authorize(...adminRoles), bill.markOverdue.bind(bill));
 

@@ -1,0 +1,26 @@
+meta {
+  name: [Webhook] Duitku - Payment Failed
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{base_url_payment}}/payments/webhook/duitku
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "merchantCode": "DS12345",
+    "amount": "255000",
+    "merchantOrderId": "{{external_id}}",
+    "productDetail": "SPP 3/2025",
+    "additionalParam": "",
+    "paymentCode": "T1",
+    "resultCode": "02",
+    "merchantUserId": "",
+    "reference": "DEV_REF_002",
+    "signature": "skip_in_dev"
+  }
+}
