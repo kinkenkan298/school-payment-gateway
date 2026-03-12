@@ -13,6 +13,7 @@ export interface IStudent extends Document {
   parentName: string;
   parentPhone: string;
   parentEmail?: string;
+  fcmToken?: string;
   status: StudentStatus;
   createdAt: Date;
   updatedAt: Date;
@@ -30,6 +31,7 @@ const studentSchema = new Schema<IStudent>(
     parentName: { type: String, required: true, trim: true },
     parentPhone: { type: String, required: true, trim: true },
     parentEmail: { type: String, lowercase: true, trim: true },
+    fcmToken: { type: String }, // ← tambah ini
     status: {
       type: String,
       enum: ['active', 'inactive', 'graduated', 'transferred'],

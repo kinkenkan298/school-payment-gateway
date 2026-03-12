@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { StudentService } from '@/services/student.service';
 import {
   successResponse,
@@ -8,6 +8,7 @@ import {
 } from '@school-payment-gateway/shared-lib';
 import { AuthRequest } from '@/middlewares/auth.middleware';
 import { studentPaginationSchema } from '@/validators/student.validator';
+import { StudentModel } from '@/models/student.model';
 
 const studentService = new StudentService();
 
@@ -58,8 +59,16 @@ export class StudentController {
 
   async getStudentById(req: AuthRequest, res: Response): Promise<void> {
     try {
-      const schoolId = req.user!.schoolId as string;
-      const student = await studentService.getStudentById(schoolId, req.params.id);
+      const isInternal = !req.user;
+      const student = isInternal
+        ? await StudentModel.findById(req.params.id)
+        : await studentService.getStudentById(req.user!.schoolId as string, req.params.id);
+
+      if (!student) {
+        res.status(HTTP_STATUS.NOT_FOUND).json(errorResponse('STUDENT_NOT_FOUND'));
+        return;
+      }
+
       res.status(HTTP_STATUS.OK).json(successResponse(student));
     } catch (err) {
       handleError(err, res);

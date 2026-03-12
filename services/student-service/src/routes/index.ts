@@ -19,6 +19,7 @@ const bill = new SPPBillController();
 const schoolRoles = [ROLES.SCHOOL_ADMIN, ROLES.SCHOOL_STAFF];
 const adminRoles = [ROLES.SCHOOL_ADMIN, ROLES.PLATFORM_ADMIN, ROLES.SUPER_ADMIN];
 
+router.get('/students/:id', authenticateInternal, student.getStudentById.bind(student));
 router.get('/bills/:id', authenticateInternal, bill.getBillById.bind(bill));
 
 router.use(authenticate);
@@ -40,7 +41,6 @@ router.post(
 router.get('/students/stats', authorize(...schoolRoles), student.getStudentStats.bind(student));
 router.get('/students/imports', authorize(...schoolRoles), student.getImportHistory.bind(student));
 router.get('/students/nis/:nis', authorize(...schoolRoles), student.getStudentByNis.bind(student));
-router.get('/students/:id', authorize(...schoolRoles), student.getStudentById.bind(student));
 router.patch(
   '/students/:id',
   authorize(ROLES.SCHOOL_ADMIN),
