@@ -1,0 +1,15 @@
+meta {
+  name: Dashboard Summary
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url_reporting}}/reports/dashboard?schoolId={{school_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

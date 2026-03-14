@@ -24,8 +24,8 @@ const envSchema = z.object({
   NOTIFICATION_SERVICE_URL: z.url().default('http://localhost:3005'),
   SETTLEMENT_SERVICE_URL: z.url().default('http://localhost:3007'),
   FRAUD_DETECTION_URL: z.url().default('http://localhost:3008'),
-  REPORTING_SERVICE_URL: z.url().default('http://localhost:3008'),
-  WEBHOOK_SERVICE_URL: z.url().default('http://localhost:3009'),
+  REPORTING_SERVICE_URL: z.url().default('http://localhost:3009'),
+  WEBHOOK_SERVICE_URL: z.url().default('http://localhost:3010'),
   ADMIN_SERVICE_URL: z.url().default('http://localhost:3010'),
 });
 
