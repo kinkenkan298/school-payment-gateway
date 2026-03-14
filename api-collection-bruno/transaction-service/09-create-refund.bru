@@ -1,0 +1,28 @@
+meta {
+  name: Create Refund
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{base_url_transaction}}/transactions/refund
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "paymentId": "{{payment_id}}",
+    "reason": "Permintaan pembatalan dari orang tua siswa"
+  }
+}
+
+script:post-response {
+  if (res.status === 201) {
+    bru.setEnvVar("transaction_id", res.body.data._id);
+  }
+}

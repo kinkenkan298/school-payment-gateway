@@ -11,7 +11,8 @@ export type QueueEvent =
   | 'notification.email'
   | 'notification.sms'
   | 'webhook.received'
-  | 'webhook.trigger';
+  | 'webhook.trigger'
+  | 'transaction.created';
 
 export interface QueueMessage<T = unknown> {
   event: QueueEvent;

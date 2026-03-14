@@ -1,0 +1,22 @@
+meta {
+  name: Mark Transactions as Settled (Internal)
+  type: http
+  seq: 11
+}
+
+patch {
+  url: {{base_url_transaction}}/transactions/settle
+  body: json
+  auth: none
+}
+
+headers {
+  x-internal-secret: {{internal_secret}}
+}
+
+body:json {
+  {
+    "transactionIds": ["{{transaction_id}}"],
+    "settlementBatchId": "BATCH-2026-03-001"
+  }
+}
