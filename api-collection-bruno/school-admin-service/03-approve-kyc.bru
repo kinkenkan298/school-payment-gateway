@@ -1,0 +1,21 @@
+meta {
+  name: Approve KYC
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url_admin}}/admin/schools/{{school_id}}/kyc/approve
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "note": "Dokumen KYC lengkap dan valid"
+  }
+}

@@ -1,0 +1,15 @@
+meta {
+  name: Get Config by Key
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{base_url_admin}}/admin/configs/payment.admin_fee_percentage
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

@@ -1,0 +1,22 @@
+meta {
+  name: Update Status - Reviewing
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{base_url_fraud}}/fraud-alerts/{{fraud_alert_id}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "status": "reviewing",
+    "note": "Sedang diperiksa oleh tim fraud"
+  }
+}

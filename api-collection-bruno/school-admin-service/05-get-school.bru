@@ -1,0 +1,15 @@
+meta {
+  name: Get School Detail
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url_admin}}/admin/schools/{{school_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

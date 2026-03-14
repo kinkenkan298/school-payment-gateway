@@ -1,0 +1,22 @@
+meta {
+  name: Update School Status
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{base_url_admin}}/admin/schools/{{school_id}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "status": "suspended",
+    "note": "Pelanggaran kebijakan platform"
+  }
+}

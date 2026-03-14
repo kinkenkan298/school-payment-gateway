@@ -1,0 +1,15 @@
+meta {
+  name: Filter by Status (Open)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url_fraud}}/fraud-alerts?status=open
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
