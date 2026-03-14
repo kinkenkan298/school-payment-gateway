@@ -1,0 +1,22 @@
+meta {
+  name: Update Status - False Positive
+  type: http
+  seq: 9
+}
+
+patch {
+  url: {{base_url_fraud}}/fraud-alerts/{{fraud_alert_id}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "status": "false_positive",
+    "note": "Pembayaran valid dari orang tua yang terverifikasi"
+  }
+}

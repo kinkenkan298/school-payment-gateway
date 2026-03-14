@@ -1,0 +1,15 @@
+meta {
+  name: Export SPP Bills CSV
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{base_url_reporting}}/reports/export/bills?schoolId={{school_id}}&academicYear=2025/2026
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
