@@ -1,159 +1,164 @@
-# Turborepo starter
+# School Payment Gateway
 
-This Turborepo starter is maintained by the Turborepo core team.
+Platform pembayaran sekolah berbasis microservice yang menghubungkan sekolah, siswa, dan penyedia payment gateway. Mendukung tiga model bisnis: markup fee, komisi per transaksi, dan integrasi H2H bank.
 
-## Using this example
+---
 
-Run the following command:
+## Daftar Isi
 
-```sh
-npx create-turbo@latest
+- [Arsitektur](#arsitektur)
+- [Model Bisnis](#model-bisnis)
+- [Struktur Monorepo](#struktur-monorepo)
+- [Prasyarat](#prasyarat)
+- [Instalasi](#instalasi)
+- [Menjalankan Aplikasi](#menjalankan-aplikasi)
+- [Apps Frontend](#apps-frontend)
+- [Konfigurasi Environment](#konfigurasi-environment)
+- [Build & Deploy](#build--deploy)
+
+---
+
+## Arsitektur
+
+```
+school-payment-gateway/
+├── apps/
+│   ├── merchant-dashboard/   # Portal sekolah/merchant (port 4000)
+│   └── admin-panel/          # Panel operator platform (port 5000)
+├── packages/
+│   └── types/                # Shared TypeScript types
+├── services/                 # Backend microservices (future)
+├── turbo.json
+└── pnpm-workspace.yaml
 ```
 
-## What's inside?
+**Stack:**
 
-This Turborepo includes the following packages/apps:
+| Layer | Teknologi |
+|-------|-----------|
+| Framework | Next.js 15 (App Router) |
+| UI | React 19 |
+| Language | TypeScript 5 |
+| Styling | Tailwind CSS v4 |
+| State | Zustand |
+| Data Fetching | TanStack React Query + Axios |
+| Charts | Recharts |
+| Icons | Lucide React |
+| Monorepo | Turborepo |
+| Package Manager | pnpm |
 
-### Apps and Packages
+---
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@school-payment-gateway/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@school-payment-gateway/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@school-payment-gateway/typescript-config`: `tsconfig.json`s used throughout the monorepo
+## Model Bisnis
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+| Workflow | Deskripsi |
+|----------|-----------|
+| **A** | Vendor PG → School Pay (Platform) → Sekolah — platform mengambil markup fee |
+| **B** | Vendor PG → Sekolah — platform mendapat komisi per transaksi |
+| **C** | H2H Bank Sekolah → Sekolah — integrasi langsung, gratis |
 
-### Utilities
+---
 
-This Turborepo has some additional tools already setup for you:
+## Struktur Monorepo
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+```
+apps/
+  merchant-dashboard/   Portal untuk sekolah (merchant)
+  admin-panel/          Panel manajemen operator platform
 
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+packages/
+  types/                Interface dan type yang dipakai semua app
 ```
 
-Without global `turbo`, use your package manager:
+---
 
-```sh
-cd my-turborepo
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+## Prasyarat
+
+- **Node.js** >= 18.x
+- **pnpm** >= 9.x
+- **Git**
+
+```bash
+# Install pnpm jika belum ada
+npm install -g pnpm
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+---
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+## Instalasi
 
-```sh
-turbo build --filter=docs
+```bash
+# Clone repository
+git clone <repo-url>
+cd school-payment-gateway
+
+# Install semua dependencies
+pnpm install
 ```
 
-Without global `turbo`:
+---
 
-```sh
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+## Menjalankan Aplikasi
+
+### Semua app sekaligus
+
+```bash
+pnpm dev
 ```
 
-### Develop
+### Per app (recommended saat development)
 
-To develop all apps and packages, run the following command:
+```bash
+# Merchant Dashboard (port 4000)
+pnpm --filter merchant-dashboard dev
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
+# Admin Panel (port 5000)
+pnpm --filter admin-panel dev
 ```
 
-Without global `turbo`, use your package manager:
+---
 
-```sh
-cd my-turborepo
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+## Apps Frontend
+
+| App | URL | Deskripsi |
+|-----|-----|-----------|
+| Merchant Dashboard | http://localhost:4000 | Portal sekolah: buat tagihan, lihat transaksi, settlement |
+| Admin Panel | http://localhost:5000 | Panel operator: kelola merchant, KYC, fraud, laporan |
+
+Detail lengkap masing-masing app:
+
+- [Merchant Dashboard →](apps/merchant-dashboard/README.md)
+- [Admin Panel →](apps/admin-panel/README.md)
+
+---
+
+## Konfigurasi Environment
+
+Buat file `.env.local` di masing-masing app:
+
+```bash
+# apps/merchant-dashboard/.env.local
+NEXT_PUBLIC_API_URL=http://localhost:3001/api
+
+# apps/admin-panel/.env.local
+NEXT_PUBLIC_API_URL=http://localhost:3001/api
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+---
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+## Build & Deploy
 
-```sh
-turbo dev --filter=web
+```bash
+# Build semua app
+pnpm build
+
+# Build spesifik app
+pnpm --filter merchant-dashboard build
+pnpm --filter admin-panel build
+
+# Type check semua
+pnpm --filter merchant-dashboard exec tsc --noEmit
+pnpm --filter admin-panel exec tsc --noEmit
 ```
 
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+> Saat ini semua halaman menggunakan **mock data**. Ganti dengan API call via Axios + React Query setelah backend siap.
