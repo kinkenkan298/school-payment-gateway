@@ -1,0 +1,26 @@
+meta {
+  name: [GW] Webhook Xendit Success
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url_gateway}}/api/v1/webhooks/xendit
+  body: json
+  auth: none
+}
+
+headers {
+  x-callback-token: {{xendit_callback_token}}
+}
+
+body:json {
+  {
+    "id": "inv_123",
+    "external_id": "{{external_id}}",
+    "status": "PAID",
+    "amount": 110000,
+    "paid_amount": 110000,
+    "paid_at": "2026-03-14T10:00:00.000Z"
+  }
+}

@@ -1,0 +1,21 @@
+meta {
+  name: [GW] Webhook Midtrans Success
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url_gateway}}/api/v1/webhooks/midtrans
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "order_id": "{{external_id}}",
+    "transaction_status": "settlement",
+    "fraud_status": "accept",
+    "gross_amount": "110000.00",
+    "signature_key": "mock_signature"
+  }
+}

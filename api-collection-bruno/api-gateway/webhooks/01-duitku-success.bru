@@ -1,0 +1,26 @@
+meta {
+  name: [GW] Webhook Duitku Success
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url_gateway}}/api/v1/webhooks/duitku
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "merchantCode": "D1234",
+    "paymentAmount": "110000",
+    "merchantOrderId": "{{external_id}}",
+    "productDetail": "SPP 1/2026",
+    "additionalParam": "",
+    "paymentCode": "VC",
+    "resultCode": "00",
+    "merchantUserId": "user123",
+    "reference": "REF001",
+    "signature": "mock_signature"
+  }
+}

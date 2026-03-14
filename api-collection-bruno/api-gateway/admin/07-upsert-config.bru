@@ -1,0 +1,23 @@
+meta {
+  name: [GW] Upsert Platform Config
+  type: http
+  seq: 7
+}
+
+put {
+  url: {{base_url_gateway}}/api/v1/admin/configs
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "key": "payment.admin_fee_percentage",
+    "value": 1.5,
+    "description": "Persentase admin fee dari total pembayaran"
+  }
+}

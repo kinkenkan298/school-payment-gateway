@@ -1,0 +1,15 @@
+meta {
+  name: [GW] Get Transaction by ID
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url_gateway}}/api/v1/transactions/{{transaction_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

@@ -1,0 +1,22 @@
+meta {
+  name: [GW] Update Alert Status
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{base_url_gateway}}/api/v1/fraud-alerts/{{fraud_alert_id}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "status": "resolved",
+    "note": "Telah diverifikasi, bukan aktivitas fraud"
+  }
+}

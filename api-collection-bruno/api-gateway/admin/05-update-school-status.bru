@@ -1,0 +1,22 @@
+meta {
+  name: [GW] Update School Status
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{base_url_gateway}}/api/v1/admin/schools/{{school_id}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "status": "suspended",
+    "note": "Pelanggaran kebijakan platform"
+  }
+}
