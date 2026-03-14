@@ -289,6 +289,55 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
 
+  services/reporting-service:
+    dependencies:
+      '@school-payment-gateway/shared-lib':
+        specifier: workspace:^
+        version: link:../../packages/shared-lib
+      '@school-payment-gateway/types':
+        specifier: workspace:^
+        version: link:../../packages/types
+      axios:
+        specifier: ^1.13.6
+        version: 1.13.6
+      cors:
+        specifier: ^2.8.6
+        version: 2.8.6
+      dotenv:
+        specifier: ^17.3.1
+        version: 17.3.1
+      express:
+        specifier: ^5.2.1
+        version: 5.2.1
+      helmet:
+        specifier: ^8.1.0
+        version: 8.1.0
+      mongoose:
+        specifier: ^9.2.4
+        version: 9.2.4
+      zod:
+        specifier: ^4.3.6
+        version: 4.3.6
+    devDependencies:
+      '@types/cors':
+        specifier: ^2.8.19
+        version: 2.8.19
+      '@types/express':
+        specifier: ^5.0.6
+        version: 5.0.6
+      '@types/node':
+        specifier: ^25.3.5
+        version: 25.3.5
+      tsc-alias:
+        specifier: ^1.8.16
+        version: 1.8.16
+      tsx:
+        specifier: ^4.21.0
+        version: 4.21.0
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+
   services/school-service:
     dependencies:
       '@school-payment-gateway/shared-lib':

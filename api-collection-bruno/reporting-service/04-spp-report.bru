@@ -1,0 +1,15 @@
+meta {
+  name: SPP Report
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url_reporting}}/reports/spp?schoolId={{school_id}}&academicYear=2025/2026
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
