@@ -1,0 +1,15 @@
+meta {
+  name: Run Auto Settlement (Super Admin)
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{base_url_settlement}}/settlements/auto
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
