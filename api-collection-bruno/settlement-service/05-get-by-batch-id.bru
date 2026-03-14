@@ -1,0 +1,15 @@
+meta {
+  name: Get Settlement by Batch ID
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url_settlement}}/settlements/batch/{{settlement_batch_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

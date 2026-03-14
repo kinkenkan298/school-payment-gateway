@@ -1,0 +1,15 @@
+meta {
+  name: Get Settlement by ID
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url_settlement}}/settlements/{{settlement_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

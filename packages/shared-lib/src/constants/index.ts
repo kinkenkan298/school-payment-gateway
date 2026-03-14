@@ -25,6 +25,9 @@ export const QUEUES = {
   PAYMENT_FAILED_NOTIFICATION: 'payment.failed.notification',
 
   WEBHOOK_RECEIVED_PAYMENT: 'webhook.received.payment',
+
+  SETTLEMENT_TRANSACTION: 'settlement.transaction.queue',
+  SETTLEMENT_COMPLETED_NOTIFICATION: 'settlement.completed.notification',
 } as const;
 
 export const HTTP_STATUS = {
