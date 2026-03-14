@@ -26,7 +26,7 @@ const envSchema = z.object({
   FRAUD_DETECTION_URL: z.url().default('http://localhost:3008'),
   REPORTING_SERVICE_URL: z.url().default('http://localhost:3009'),
   WEBHOOK_SERVICE_URL: z.url().default('http://localhost:3010'),
-  ADMIN_SERVICE_URL: z.url().default('http://localhost:3010'),
+  ADMIN_SERVICE_URL: z.url().default('http://localhost:3011'),
 });
 
 type Env = z.infer<typeof envSchema>;
