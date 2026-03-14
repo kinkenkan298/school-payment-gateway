@@ -1,0 +1,29 @@
+meta {
+  name: Create Settlement (Manual)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url_settlement}}/settlements
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "schoolId": "{{school_id}}",
+    "notes": "Settlement manual bulan Maret 2026"
+  }
+}
+
+script:post-response {
+  if (res.status === 201) {
+    bru.setEnvVar("settlement_id", res.body.data._id);
+    bru.setEnvVar("settlement_batch_id", res.body.data.batchId);
+  }
+}

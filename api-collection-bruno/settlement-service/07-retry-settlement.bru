@@ -1,0 +1,15 @@
+meta {
+  name: Retry Failed Settlement
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{base_url_settlement}}/settlements/{{settlement_id}}/retry
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
