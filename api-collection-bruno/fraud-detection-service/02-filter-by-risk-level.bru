@@ -1,0 +1,15 @@
+meta {
+  name: Filter by Risk Level (High)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url_fraud}}/fraud-alerts?riskLevel=high
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

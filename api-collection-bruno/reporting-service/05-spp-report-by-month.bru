@@ -1,0 +1,15 @@
+meta {
+  name: SPP Report by Month
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url_reporting}}/reports/spp?schoolId={{school_id}}&month=3&year=2026
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
