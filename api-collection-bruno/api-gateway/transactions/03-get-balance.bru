@@ -1,0 +1,15 @@
+meta {
+  name: [GW] Get School Balance
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url_gateway}}/api/v1/transactions/balance
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

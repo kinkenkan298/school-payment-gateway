@@ -1,0 +1,15 @@
+meta {
+  name: [GW] Get Transaction Stats
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url_gateway}}/api/v1/transactions/stats?schoolId={{school_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

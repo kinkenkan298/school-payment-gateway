@@ -1,0 +1,15 @@
+meta {
+  name: [GW] Get Payment Stats
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url_gateway}}/api/v1/payments/stats?schoolId={{school_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
