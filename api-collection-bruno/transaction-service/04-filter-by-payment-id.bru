@@ -1,0 +1,15 @@
+meta {
+  name: Filter Transactions by Payment ID
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url_transaction}}/transactions?paymentId={{payment_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

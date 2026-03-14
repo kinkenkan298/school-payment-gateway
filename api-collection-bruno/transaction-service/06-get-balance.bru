@@ -1,0 +1,15 @@
+meta {
+  name: Get School Balance
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{base_url_transaction}}/transactions/balance
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
