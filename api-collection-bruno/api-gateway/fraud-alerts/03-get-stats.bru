@@ -1,0 +1,15 @@
+meta {
+  name: [GW] Get Fraud Stats
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url_gateway}}/api/v1/fraud-alerts/stats?schoolId={{school_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

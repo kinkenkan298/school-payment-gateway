@@ -1,0 +1,15 @@
+meta {
+  name: [GW] Platform Dashboard
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url_gateway}}/api/v1/admin/dashboard
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

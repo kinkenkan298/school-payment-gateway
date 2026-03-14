@@ -1,0 +1,15 @@
+meta {
+  name: [GW] Dashboard Summary
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url_gateway}}/api/v1/reports/dashboard?schoolId={{school_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

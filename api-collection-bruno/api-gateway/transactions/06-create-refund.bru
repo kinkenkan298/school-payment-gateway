@@ -1,0 +1,22 @@
+meta {
+  name: [GW] Create Refund
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{base_url_gateway}}/api/v1/transactions/refund
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "paymentId": "{{payment_id}}",
+    "reason": "Permintaan pembatalan dari orang tua siswa"
+  }
+}

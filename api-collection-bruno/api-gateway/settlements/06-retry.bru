@@ -1,0 +1,15 @@
+meta {
+  name: [GW] Retry Failed Settlement
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{base_url_gateway}}/api/v1/settlements/{{settlement_id}}/retry
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

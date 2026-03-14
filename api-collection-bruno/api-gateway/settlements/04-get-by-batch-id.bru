@@ -1,0 +1,15 @@
+meta {
+  name: [GW] Get Settlement by Batch ID
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url_gateway}}/api/v1/settlements/batch/{{settlement_batch_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

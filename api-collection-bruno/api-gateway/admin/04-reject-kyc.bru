@@ -1,0 +1,21 @@
+meta {
+  name: [GW] Reject School KYC
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url_gateway}}/api/v1/admin/schools/{{school_id}}/kyc/reject
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "reason": "Dokumen NPSN tidak sesuai dengan data dinas pendidikan"
+  }
+}
